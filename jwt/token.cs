@@ -11,7 +11,7 @@ partial class jwt_package {
 
 // type Keyfunc is a methodless func type — rendered inline as its base delegate
 
-partial interface VerificationKeyᴛ1 /*dyn*/ {
+partial interface VerificationKeyᴛ1<ΔT> /*dyn*/ {
     //  Type constraints: crypto.PublicKey | []uint8
     // Derived operators: none
 }
@@ -40,8 +40,8 @@ public static ж<Token> NewWithClaims(SigningMethod method, Claims claims, param
 
     return Ꮡ(new Token(
         Header: new map<@string, any>{
-            ["typ"u8] = (@string)"JWT"u8,
-            ["alg"u8] = method.Alg()
+            ["typ"] = (@string)"JWT"u8,
+            ["alg"] = method.Alg()
         },
         Claims: claims,
         Method: method
@@ -53,11 +53,14 @@ public static (@string, error) SignedString(this ref Token t, any key) {
     if (err != default!) {
         return ("", err);
     }
+
     (var sig, err) = t.Method.Sign(sstr, key);
     if (err != default!) {
         return ("", err);
     }
+
     t.Signature = sig;
+
     return (sstr + "." + t.EncodeSegment(sig), default!);
 }
 
@@ -66,10 +69,12 @@ public static (@string, error) SigningString(this ref Token t) {
     if (err != default!) {
         return ("", err);
     }
+
     (var c, err) = json.Marshal(t.Claims);
     if (err != default!) {
         return ("", err);
     }
+
     return (t.EncodeSegment(h) + "." + t.EncodeSegment(c), default!);
 }
 

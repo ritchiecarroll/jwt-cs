@@ -37,9 +37,11 @@ public static ж<rsa.PublicKey> LoadRSAPublicKeyFromDisk(@string location) {
 public static @string MakeSampleToken(jwt.Claims c, jwt.SigningMethod method, any key) {
     var token = jwt.NewWithClaims(method, c);
     var (s, e) = token.SignedString(key);
+
     if (e != default!) {
         throw panic(e.Error());
     }
+
     return s;
 }
 

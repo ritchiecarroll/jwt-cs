@@ -15,19 +15,14 @@ public partial struct unsafeNoneMagicConstant /*@string*/;
 
 [GoInit] internal static void initΔ3() {
     SigningMethodNone = Ꮡ(new signingMethodNone(nil));
-    NoneSignatureTypeDisallowedError = newError("'none' signature type is not allowed"u8, ErrTokenUnverifiable);
+    NoneSignatureTypeDisallowedError = newError("'none' signature type is not allowed", ErrTokenUnverifiable);
+
     RegisterSigningMethod(SigningMethodNone.Alg(), () => new signingMethodNoneжSigningMethod(SigningMethodNone));
 }
 
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string noneˢ = "none"u8;
-
 public static @string Alg(this ref signingMethodNone m) {
-    return noneˢ;
+    return "none";
 }
-
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string noneSigningMethodWithNonˢ = "'none' signing method with non-empty signature"u8;
 
 public static error /*err*/ Verify(this ref signingMethodNone m, @string signingString, slice<byte> sig, any key) {
     {
@@ -36,8 +31,9 @@ public static error /*err*/ Verify(this ref signingMethodNone m, @string signing
         }
     }
     if (len(sig) != 0) {
-        return newError(noneSigningMethodWithNonˢ, ErrTokenUnverifiable);
+        return newError("'none' signing method with non-empty signature", ErrTokenUnverifiable);
     }
+
     return default!;
 }
 
@@ -47,6 +43,7 @@ public static (slice<byte>, error) Sign(this ref signingMethodNone m, @string si
             return (new byte[]{}.slice(), default!);
         }
     }
+
     return (default!, NoneSignatureTypeDisallowedError);
 }
 

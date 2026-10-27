@@ -12,19 +12,23 @@ public static (ж<jwt.Token> token, error err) ParseFromRequest(ж<http.Request>
     var options = optionsʗp.sslice();
 
     var p = Ꮡ(new fromRequestParser(Ꮡreq, extractor, default!, nil));
+
     foreach (var (_, option) in options) {
         option(p);
     }
+
     if ((~p).claims == default!) {
         p.Value.claims = new jwt.MapClaims(new map<@string, any>{});
     }
     if ((~p).parser == nil) {
         p.Value.parser = Ꮡ(new jwt.Parser(nil));
     }
+
     (var tokenString, err) = (~p).extractor.ExtractToken(Ꮡreq);
     if (err != default!) {
         return (default!, err);
     }
+
     return (~p).parser.ParseWithClaims(tokenString, (~p).claims, keyFunc);
 }
 

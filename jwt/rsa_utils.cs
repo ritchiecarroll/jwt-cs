@@ -9,18 +9,20 @@ using go.crypto;
 
 partial class jwt_package {
 
-public static error ErrKeyMustBePEMEncoded = errors.New("invalid key: Key must be a PEM encoded PKCS1 or PKCS8 key"u8);
-public static error ErrNotRSAPrivateKey = errors.New("key is not a valid RSA private key"u8);
-public static error ErrNotRSAPublicKey = errors.New("key is not a valid RSA public key"u8);
+public static error ErrKeyMustBePEMEncoded = errors.New("invalid key: Key must be a PEM encoded PKCS1 or PKCS8 key");
+public static error ErrNotRSAPrivateKey = errors.New("key is not a valid RSA private key");
+public static error ErrNotRSAPublicKey = errors.New("key is not a valid RSA public key");
 
 public static (ж<rsa.PrivateKey>, error) ParseRSAPrivateKeyFromPEM(slice<byte> key) {
     error err = default!;
+
     ж<pem.Block> block = default!;
     {
         (block, _) = pem.Decode(key); if (block == nil) {
             return (default!, ErrKeyMustBePEMEncoded);
         }
     }
+
     any parsedKey = default!;
     {
         (parsedKey, err) = x509.ParsePKCS1PrivateKey((~block).Bytes); if (err != default!) {
@@ -31,6 +33,7 @@ public static (ж<rsa.PrivateKey>, error) ParseRSAPrivateKeyFromPEM(slice<byte> 
             }
         }
     }
+
     ж<rsa.PrivateKey> pkey = default!;
     bool ok = default!;
     {
@@ -38,24 +41,29 @@ public static (ж<rsa.PrivateKey>, error) ParseRSAPrivateKeyFromPEM(slice<byte> 
             return (default!, ErrNotRSAPrivateKey);
         }
     }
+
     return (pkey, default!);
 }
 
 public static (ж<rsa.PrivateKey>, error) ParseRSAPrivateKeyFromPEMWithPassword(slice<byte> key, @string password) {
     error err = default!;
+
     ж<pem.Block> block = default!;
     {
         (block, _) = pem.Decode(key); if (block == nil) {
             return (default!, ErrKeyMustBePEMEncoded);
         }
     }
+
     any parsedKey = default!;
+
     slice<byte> blockDecrypted = default!;
     {
         (blockDecrypted, err) = x509.DecryptPEMBlock(block, slice<byte>(password)); if (err != default!) {
             return (default!, err);
         }
     }
+
     {
         (parsedKey, err) = x509.ParsePKCS1PrivateKey(blockDecrypted); if (err != default!) {
             {
@@ -65,6 +73,7 @@ public static (ж<rsa.PrivateKey>, error) ParseRSAPrivateKeyFromPEMWithPassword(
             }
         }
     }
+
     ж<rsa.PrivateKey> pkey = default!;
     bool ok = default!;
     {
@@ -72,17 +81,20 @@ public static (ж<rsa.PrivateKey>, error) ParseRSAPrivateKeyFromPEMWithPassword(
             return (default!, ErrNotRSAPrivateKey);
         }
     }
+
     return (pkey, default!);
 }
 
 public static (ж<rsa.PublicKey>, error) ParseRSAPublicKeyFromPEM(slice<byte> key) {
     error err = default!;
+
     ж<pem.Block> block = default!;
     {
         (block, _) = pem.Decode(key); if (block == nil) {
             return (default!, ErrKeyMustBePEMEncoded);
         }
     }
+
     any parsedKey = default!;
     {
         (parsedKey, err) = x509.ParsePKIXPublicKey((~block).Bytes); if (err != default!) {
@@ -99,6 +111,7 @@ public static (ж<rsa.PublicKey>, error) ParseRSAPublicKeyFromPEM(slice<byte> ke
             }
         }
     }
+
     ж<rsa.PublicKey> pkey = default!;
     bool ok = default!;
     {
@@ -106,6 +119,7 @@ public static (ж<rsa.PublicKey>, error) ParseRSAPublicKeyFromPEM(slice<byte> ke
             return (default!, ErrNotRSAPublicKey);
         }
     }
+
     return (pkey, default!);
 }
 

@@ -7,7 +7,7 @@ using net;
 
 partial class request_package {
 
-public static error ErrNoTokenInRequest = errors.New("no token present in request"u8);
+public static error ErrNoTokenInRequest = errors.New("no token present in request");
 
 partial interface Extractor {
     (@string, error) ExtractToken(ж<http.Request> _);
@@ -34,6 +34,7 @@ public static (@string, error) ExtractToken(this ArgumentExtractor e, ж<http.Re
     ref var req = ref Ꮡreq.DerefOrNull();
 
     _ = Ꮡreq.ParseMultipartForm(10000000);
+
     foreach (var (_, arg) in e) {
         {
             @string ah = req.Form.Get(arg); if (ah != ""u8) {
@@ -41,6 +42,7 @@ public static (@string, error) ExtractToken(this ArgumentExtractor e, ж<http.Re
             }
         }
     }
+
     return ("", ErrNoTokenInRequest);
 }
 
@@ -78,15 +80,11 @@ public static (@string, error) ExtractToken(this ref PostExtractionFilter e, ж<
 partial struct BearerExtractor {
 }
 
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string authorizationˢ = "Authorization"u8;
-internal static readonly @string bearerˢ = "bearer "u8;
-
 public static (@string, error) ExtractToken(this BearerExtractor e, ж<http.Request> Ꮡreq) {
     ref var req = ref Ꮡreq.DerefOrNull();
 
-    @string tokenHeader = req.Header.Get(authorizationˢ);
-    if (len(tokenHeader) < 7 || !strings.EqualFold(tokenHeader[..7], bearerˢ)) {
+    @string tokenHeader = req.Header.Get("Authorization");
+    if (len(tokenHeader) < 7 || !strings.EqualFold(tokenHeader[..7], "bearer ")) {
         return ("", ErrNoTokenInRequest);
     }
     return (tokenHeader[7..], default!);

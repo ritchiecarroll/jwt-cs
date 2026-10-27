@@ -58,7 +58,7 @@ using static go.github.com.golang_jwt.jwt.v5.test_package;
 // or has none - golib, the BCL and hand-written conversions - and reports its own C# position.
 
 // <GoSourcePositionMaps>
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/test/helpers.go", "helpers.cs", "AAwWgoKClIKClKaCgoKUgoKUqIKChIKWpoKCgpSCgpSmgoKClIKClA==")]
+[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/test/helpers.go", "helpers.cs", "AAwWgoKClIKClKaCgoKUgoKUqIKClIKmpoKCgpSCgpSmgoKClIKClA==")]
 // </GoSourcePositionMaps>
 
 namespace go.github.com.golang_jwt.jwt.v5;

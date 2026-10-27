@@ -19,6 +19,7 @@ public static void RegisterSigningMethod(@string alg, Func<SigningMethod> f) {
     try {
         signingMethodLock.Lock();
         defer(signingMethodLock.Unlock, ref ᒐ);
+
         signingMethods[alg] = f;
     }
     catch (Exception ᒐex) when (GoFrame.IsPanic(ᒐex, out PanicException? ᒐp)) { GoFrame.Capture(ᒐp); }
@@ -31,6 +32,7 @@ public static SigningMethod /*method*/ GetSigningMethod(@string alg) {
     try {
         signingMethodLock.RLock();
         defer(signingMethodLock.RUnlock, ref ᒐ);
+
         {
             var (methodF, ok) = signingMethods[alg, ꟷ]; if (ok) {
                 method = methodF();
@@ -48,6 +50,7 @@ public static slice<@string> /*algs*/ GetAlgorithms() {
     try {
         signingMethodLock.RLock();
         defer(signingMethodLock.RUnlock, ref ᒐ);
+
         foreach (var (alg, _) in signingMethods) {
             algs = append(algs, alg);
         }

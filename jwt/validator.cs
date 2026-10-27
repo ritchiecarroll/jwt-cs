@@ -35,21 +35,25 @@ public static error Validate(this ref Validator v, Claims claims) {
     time.Time now = default!;
     slice<error> errs = new slice<error>(0, 6);
     error err = default!;
+
     if (v.timeFunc != default!){
         now = v.timeFunc();
     } else {
         now = time.Now();
     }
+
     {
         err = v.verifyExpiresAt(claims, now, v.requireExp); if (err != default!) {
             errs = append(errs, err);
         }
     }
+
     {
         err = v.verifyNotBefore(claims, now, v.requireNbf); if (err != default!) {
             errs = append(errs, err);
         }
     }
+
     if (v.verifyIat) {
         {
             err = v.verifyIssuedAt(claims, now, false); if (err != default!) {
@@ -57,6 +61,7 @@ public static error Validate(this ref Validator v, Claims claims) {
             }
         }
     }
+
     if (len(v.expectedAud) > 0) {
         {
             err = v.verifyAudience(claims, v.expectedAud, v.expectAllAud); if (err != default!) {
@@ -64,6 +69,7 @@ public static error Validate(this ref Validator v, Claims claims) {
             }
         }
     }
+
     if (v.expectedIss != ""u8) {
         {
             err = v.verifyIssuer(claims, v.expectedIss, true); if (err != default!) {
@@ -71,6 +77,7 @@ public static error Validate(this ref Validator v, Claims claims) {
             }
         }
     }
+
     if (v.expectedSub != ""u8) {
         {
             err = v.verifySubject(claims, v.expectedSub, true); if (err != default!) {
@@ -78,6 +85,7 @@ public static error Validate(this ref Validator v, Claims claims) {
             }
         }
     }
+
     var (cvt, ok) = claims._<ClaimsValidator>(ᐧ);
     if (ok) {
         {
@@ -86,9 +94,11 @@ public static error Validate(this ref Validator v, Claims claims) {
             }
         }
     }
+
     if (len(errs) == 0) {
         return default!;
     }
+
     return joinErrors(errs.ꓸꓸꓸ);
 }
 
@@ -97,9 +107,11 @@ internal static error verifyExpiresAt(this ref Validator v, Claims claims, time.
     if (err != default!) {
         return err;
     }
+
     if (exp == nil) {
-        return errorIfRequired(@required, expˢ);
+        return errorIfRequired(@required, "exp");
     }
+
     return errorIfFalse(cmp.Before(((~exp).Time).Add(+v.leeway)), ErrTokenExpired);
 }
 
@@ -108,9 +120,11 @@ internal static error verifyIssuedAt(this ref Validator v, Claims claims, time.T
     if (err != default!) {
         return err;
     }
+
     if (iat == nil) {
-        return errorIfRequired(@required, iatˢ);
+        return errorIfRequired(@required, "iat");
     }
+
     return errorIfFalse(!cmp.Before(iat.Value.Time.Add(-v.leeway)), ErrTokenUsedBeforeIssued);
 }
 
@@ -119,9 +133,11 @@ internal static error verifyNotBefore(this ref Validator v, Claims claims, time.
     if (err != default!) {
         return err;
     }
+
     if (nbf == nil) {
-        return errorIfRequired(@required, nbfˢ);
+        return errorIfRequired(@required, "nbf");
     }
+
     return errorIfFalse(!cmp.Before(nbf.Value.Time.Add(-v.leeway)), ErrTokenNotValidYet);
 }
 
@@ -130,23 +146,28 @@ internal static error verifyAudience(this ref Validator v, Claims claims, slice<
     if (err != default!) {
         return err;
     }
+
     if (len(aud) == 0 || len(aud) == 1 && aud[0] == "") {
         var @required = len(v.expectedAud) > 0;
-        return errorIfRequired(@required, audˢ);
+        return errorIfRequired(@required, "aud");
     }
+
     if (!expectAllAud) {
         foreach (var (_, a) in aud) {
             if (slices.Contains(cmp, a)) {
                 return default!;
             }
         }
+
         return ErrTokenInvalidAudience;
     }
+
     foreach (var (_, a) in cmp) {
         if (!slices.Contains(aud, a)) {
             return ErrTokenInvalidAudience;
         }
     }
+
     return default!;
 }
 
@@ -155,9 +176,11 @@ internal static error verifyIssuer(this ref Validator v, Claims claims, @string 
     if (err != default!) {
         return err;
     }
+
     if (iss == ""u8) {
-        return errorIfRequired(@required, issˢ);
+        return errorIfRequired(@required, "iss");
     }
+
     return errorIfFalse(iss == cmp, ErrTokenInvalidIssuer);
 }
 
@@ -166,9 +189,11 @@ internal static error verifySubject(this ref Validator v, Claims claims, @string
     if (err != default!) {
         return err;
     }
+
     if (sub == ""u8) {
-        return errorIfRequired(@required, subˢ);
+        return errorIfRequired(@required, "sub");
     }
+
     return errorIfFalse(sub == cmp, ErrTokenInvalidSubject);
 }
 

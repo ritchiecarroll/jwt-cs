@@ -1,4 +1,4 @@
-> unofficial go2cs C# conversion of github.com/golang-jwt/jwt/v5 v5.3.1, built on the Go 1.24.13 standard library; not affiliated with or endorsed by the golang-jwt maintainers or the Go project. Security: that standard library carries no Go security fixes issued after Go 1.24.13; review before any production use.
+> unofficial go2cs C# conversion of github.com/golang-jwt/jwt/v5 v5.3.1, built on the Go 1.26.10 standard library; not affiliated with or endorsed by the golang-jwt maintainers or the Go project. Security: the Go standard library this package is built on includes no Go security fixes released after Go 1.26.10; review before any production use.
 
 # `github.com/golang-jwt/jwt/v5` — module validation summary
 
@@ -9,8 +9,8 @@ Both sides of every reading were built with `-tags purego,math_big_pure_go,safe`
 
 | Package | Matched | Disclosed | Input digest | Proof |
 |:--|--:|--:|:--|:--|
-| `github.com/golang-jwt/jwt/v5` | 186 | 0 | `sha256-9647af3692e22d534f884f8a59f731746d35bc4c31966ad54c405af23b24eb78` | [index.md](index.md) |
-| `github.com/golang-jwt/jwt/v5/request` | 3 | 0 | `sha256-4a1b7eb540934d7a448b0026aa284ce46c76fb8391dfd946258d9647b2c0f8cb` | [request.md](request.md) |
+| `github.com/golang-jwt/jwt/v5` | 186 | 0 | `sha256-f5c418404449c973c17f75c2827e267e9b9af30df0372805710debfe3b102f59` | [index.md](index.md) |
+| `github.com/golang-jwt/jwt/v5/request` | 3 | 0 | `sha256-eac5cdc26d5bd6b32142d06e1aec725bee73a406e3554ef8e29ec4a50b677df5` | [request.md](request.md) |
 
 **Total: 189 matched · 0 disclosed** across 2 package(s).
 

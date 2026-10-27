@@ -9,17 +9,19 @@ using go.crypto;
 
 partial class jwt_package {
 
-public static error ErrNotECPublicKey = errors.New("key is not a valid ECDSA public key"u8);
-public static error ErrNotECPrivateKey = errors.New("key is not a valid ECDSA private key"u8);
+public static error ErrNotECPublicKey = errors.New("key is not a valid ECDSA public key");
+public static error ErrNotECPrivateKey = errors.New("key is not a valid ECDSA private key");
 
 public static (ж<ecdsa.PrivateKey>, error) ParseECPrivateKeyFromPEM(slice<byte> key) {
     error err = default!;
+
     ж<pem.Block> block = default!;
     {
         (block, _) = pem.Decode(key); if (block == nil) {
             return (default!, ErrKeyMustBePEMEncoded);
         }
     }
+
     any parsedKey = default!;
     {
         (parsedKey, err) = x509.ParseECPrivateKey((~block).Bytes); if (err != default!) {
@@ -30,6 +32,7 @@ public static (ж<ecdsa.PrivateKey>, error) ParseECPrivateKeyFromPEM(slice<byte>
             }
         }
     }
+
     ж<ecdsa.PrivateKey> pkey = default!;
     bool ok = default!;
     {
@@ -37,17 +40,20 @@ public static (ж<ecdsa.PrivateKey>, error) ParseECPrivateKeyFromPEM(slice<byte>
             return (default!, ErrNotECPrivateKey);
         }
     }
+
     return (pkey, default!);
 }
 
 public static (ж<ecdsa.PublicKey>, error) ParseECPublicKeyFromPEM(slice<byte> key) {
     error err = default!;
+
     ж<pem.Block> block = default!;
     {
         (block, _) = pem.Decode(key); if (block == nil) {
             return (default!, ErrKeyMustBePEMEncoded);
         }
     }
+
     any parsedKey = default!;
     {
         (parsedKey, err) = x509.ParsePKIXPublicKey((~block).Bytes); if (err != default!) {
@@ -60,6 +66,7 @@ public static (ж<ecdsa.PublicKey>, error) ParseECPublicKeyFromPEM(slice<byte> k
             }
         }
     }
+
     ж<ecdsa.PublicKey> pkey = default!;
     bool ok = default!;
     {
@@ -67,6 +74,7 @@ public static (ж<ecdsa.PublicKey>, error) ParseECPublicKeyFromPEM(slice<byte> k
             return (default!, ErrNotECPublicKey);
         }
     }
+
     return (pkey, default!);
 }
 

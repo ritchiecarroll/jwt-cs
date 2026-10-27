@@ -8,46 +8,28 @@ partial class jwt_package {
 
 partial struct MapClaims /*map[@string, any]*/;
 
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string expˢ = "exp"u8;
-
 public static (ж<NumericDate>, error) GetExpirationTime(this MapClaims m) {
-    return m.parseNumericDate(expˢ);
+    return m.parseNumericDate("exp");
 }
-
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string nbfˢ = "nbf"u8;
 
 public static (ж<NumericDate>, error) GetNotBefore(this MapClaims m) {
-    return m.parseNumericDate(nbfˢ);
+    return m.parseNumericDate("nbf");
 }
-
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string iatˢ = "iat"u8;
 
 public static (ж<NumericDate>, error) GetIssuedAt(this MapClaims m) {
-    return m.parseNumericDate(iatˢ);
+    return m.parseNumericDate("iat");
 }
-
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string audˢ = "aud"u8;
 
 public static (ClaimStrings, error) GetAudience(this MapClaims m) {
-    return m.parseClaimsString(audˢ);
+    return m.parseClaimsString("aud");
 }
-
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string issˢ = "iss"u8;
 
 public static (@string, error) GetIssuer(this MapClaims m) {
-    return m.parseString(issˢ);
+    return m.parseString("iss");
 }
 
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string subˢ = "sub"u8;
-
 public static (@string, error) GetSubject(this MapClaims m) {
-    return m.parseString(subˢ);
+    return m.parseString("sub");
 }
 
 internal static (ж<NumericDate>, error) parseNumericDate(this MapClaims m, @string key) {
@@ -55,17 +37,21 @@ internal static (ж<NumericDate>, error) parseNumericDate(this MapClaims m, @str
     if (!ok) {
         return (default!, default!);
     }
+
     switch (v.type()) {
     case float64 exp: {
         if (exp == 0D) {
             return (default!, default!);
         }
+
         return (newNumericDateFromSeconds(exp), default!);
     }
     case json.Number exp: {
         var (vΔ1, _) = exp.Float64();
+
         return (newNumericDateFromSeconds(vΔ1), default!);
     }}
+
     return (default!, newError(fmt.Sprintf("%s is invalid"u8, key), ErrInvalidType));
 }
 
@@ -90,6 +76,7 @@ internal static (ClaimStrings, error) parseClaimsString(this MapClaims m, @strin
         }
         break;
     }}
+
     return (cs, default!);
 }
 
@@ -101,10 +88,12 @@ internal static (@string, error) parseString(this MapClaims m, @string key) {
     if (!ok) {
         return ("", default!);
     }
+
     (iss, ok) = raw._<@string>(ᐧ);
     if (!ok) {
         return ("", newError(fmt.Sprintf("%s is invalid"u8, key), ErrInvalidType));
     }
+
     return (iss, default!);
 }
 

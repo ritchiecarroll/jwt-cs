@@ -10,7 +10,7 @@ using io = io_package;
 partial class jwt_package {
 
 partial struct SigningMethodRSAPSS {
-    public partial ref ж<SigningMethodRSA> SigningMethodRSA { get; }
+    /*embed*/ public ж<SigningMethodRSA> SigningMethodRSA;
     public ж<rsa.PSSOptions> Options;
     public ж<rsa.PSSOptions> VerifyOptions;
 }
@@ -22,7 +22,7 @@ public static ж<SigningMethodRSAPSS> SigningMethodPS512;
 [GoInit] internal static void initΔ5() {
     SigningMethodPS256 = Ꮡ(new SigningMethodRSAPSS(
         SigningMethodRSA: Ꮡ(new SigningMethodRSA(
-            Name: "PS256"u8,
+            Name: "PS256",
             Hash: crypto.SHA256
         )),
         Options: Ꮡ(new rsa.PSSOptions(
@@ -33,9 +33,10 @@ public static ж<SigningMethodRSAPSS> SigningMethodPS512;
         ))
     ));
     RegisterSigningMethod(SigningMethodPS256.Alg(), () => new SigningMethodRSAPSSжSigningMethod(SigningMethodPS256));
+
     SigningMethodPS384 = Ꮡ(new SigningMethodRSAPSS(
         SigningMethodRSA: Ꮡ(new SigningMethodRSA(
-            Name: "PS384"u8,
+            Name: "PS384",
             Hash: crypto.SHA384
         )),
         Options: Ꮡ(new rsa.PSSOptions(
@@ -46,9 +47,10 @@ public static ж<SigningMethodRSAPSS> SigningMethodPS512;
         ))
     ));
     RegisterSigningMethod(SigningMethodPS384.Alg(), () => new SigningMethodRSAPSSжSigningMethod(SigningMethodPS384));
+
     SigningMethodPS512 = Ꮡ(new SigningMethodRSAPSS(
         SigningMethodRSA: Ꮡ(new SigningMethodRSA(
-            Name: "PS512"u8,
+            Name: "PS512",
             Hash: crypto.SHA512
         )),
         Options: Ꮡ(new rsa.PSSOptions(
@@ -61,9 +63,6 @@ public static ж<SigningMethodRSAPSS> SigningMethodPS512;
     RegisterSigningMethod(SigningMethodPS512.Alg(), () => new SigningMethodRSAPSSжSigningMethod(SigningMethodPS512));
 }
 
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string rsaPssVerifyExpectsRsaˢ = "RSA-PSS verify expects *rsa.PublicKey"u8;
-
 public static error Verify(this ref SigningMethodRSAPSS m, @string signingString, slice<byte> sig, any key) {
     ж<rsa.PublicKey> rsaKey = default!;
     switch (key.type()) {
@@ -73,25 +72,26 @@ public static error Verify(this ref SigningMethodRSAPSS m, @string signingString
     }
     default: {
         var k = key;
-        return newError(rsaPssVerifyExpectsRsaˢ, ErrInvalidKeyType);
+        return newError("RSA-PSS verify expects *rsa.PublicKey", ErrInvalidKeyType);
     }}
+
     if (!m.Hash.Available()) {
         return ErrHashUnavailable;
     }
     var hasher = m.Hash.New();
     hasher.Write(slice<byte>(signingString));
+
     var opts = m.Options;
     if (m.VerifyOptions != nil) {
         opts = m.VerifyOptions;
     }
+
     return rsa.VerifyPSS(rsaKey, m.Hash, hasher.Sum(default!), sig, opts);
 }
 
-// Hoisted @string literals (single allocation; Go keeps these in RODATA)
-internal static readonly @string rsaPssSignExpectsRsaˢ = "RSA-PSS sign expects *rsa.PrivateKey"u8;
-
 public static (slice<byte>, error) Sign(this ref SigningMethodRSAPSS m, @string signingString, any key) {
     ж<rsa.PrivateKey> rsaKey = default!;
+
     switch (key.type()) {
     case ж<rsa.PrivateKey> k: {
         rsaKey = k;
@@ -99,13 +99,16 @@ public static (slice<byte>, error) Sign(this ref SigningMethodRSAPSS m, @string 
     }
     default: {
         var k = key;
-        return (default!, newError(rsaPssSignExpectsRsaˢ, ErrInvalidKeyType));
+        return (default!, newError("RSA-PSS sign expects *rsa.PrivateKey", ErrInvalidKeyType));
     }}
+
     if (!m.Hash.Available()) {
         return (default!, ErrHashUnavailable);
     }
+
     var hasher = m.Hash.New();
     hasher.Write(slice<byte>(signingString));
+
     {
         var (sigBytes, err) = rsa.SignPSS(rand.Reader, rsaKey, m.Hash, hasher.Sum(default!), m.Options); if (err == default!){
             return (sigBytes, default!);
