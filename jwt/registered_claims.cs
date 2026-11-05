@@ -13,27 +13,27 @@ partial struct RegisteredClaims {
 }
 
 public static (ж<NumericDate>, error) GetExpirationTime(this RegisteredClaims c) {
-    return (c.ExpiresAt, default!);
+    return (c.ExpiresAt, default);
 }
 
 public static (ж<NumericDate>, error) GetNotBefore(this RegisteredClaims c) {
-    return (c.NotBefore, default!);
+    return (c.NotBefore, default);
 }
 
 public static (ж<NumericDate>, error) GetIssuedAt(this RegisteredClaims c) {
-    return (c.IssuedAt, default!);
+    return (c.IssuedAt, default);
 }
 
 public static (ClaimStrings, error) GetAudience(this RegisteredClaims c) {
-    return (c.Audience, default!);
+    return (c.Audience, default);
 }
 
 public static (@string, error) GetIssuer(this RegisteredClaims c) {
-    return (c.Issuer, default!);
+    return (c.Issuer, default);
 }
 
 public static (@string, error) GetSubject(this RegisteredClaims c) {
-    return (c.Subject, default!);
+    return (c.Subject, default);
 }
 
 } // end jwt_package

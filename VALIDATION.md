@@ -9,8 +9,8 @@ Both sides of every reading were built with `-tags purego,math_big_pure_go,safe`
 
 | Package | Matched | Disclosed | Input digest | Proof |
 |:--|--:|--:|:--|:--|
-| `github.com/golang-jwt/jwt/v5` | 186 | 0 | `sha256-f5c418404449c973c17f75c2827e267e9b9af30df0372805710debfe3b102f59` | [index.md](index.md) |
-| `github.com/golang-jwt/jwt/v5/request` | 3 | 0 | `sha256-eac5cdc26d5bd6b32142d06e1aec725bee73a406e3554ef8e29ec4a50b677df5` | [request.md](request.md) |
+| `github.com/golang-jwt/jwt/v5` | 186 | 0 | `sha256-72bdab9e697264b8488f25b288f8923bc95cec98a934f4b6413b056a7d7237e9` | [index.md](index.md) |
+| `github.com/golang-jwt/jwt/v5/request` | 3 | 0 | `sha256-6e94bbc14fbab37a168659aecb0e163493fd0891d460bd6d029dc62e27fee651` | [request.md](request.md) |
 
 **Total: 189 matched · 0 disclosed** across 2 package(s).
 

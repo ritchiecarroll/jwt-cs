@@ -35,12 +35,15 @@ public static ж<Token> New(SigningMethod method, params Span<Action<ж<Token>>>
     return NewWithClaims(method, new MapClaims(new map<@string, any>{}), opts.ꓸꓸꓸ);
 }
 
+// Hoisted @string literals (single allocation; Go keeps these in RODATA)
+internal static readonly object jwtˢ = (@string)"JWT"u8;
+
 public static ж<Token> NewWithClaims(SigningMethod method, Claims claims, params Span<Action<ж<Token>>> optsʗp) {
     var opts = optsʗp.sslice();
 
     return Ꮡ(new Token(
         Header: new map<@string, any>{
-            ["typ"] = (@string)"JWT"u8,
+            ["typ"] = jwtˢ,
             ["alg"] = method.Alg()
         },
         Claims: claims,
@@ -50,32 +53,32 @@ public static ж<Token> NewWithClaims(SigningMethod method, Claims claims, param
 
 public static (@string, error) SignedString(this ref Token t, any key) {
     var (sstr, err) = t.SigningString();
-    if (err != default!) {
+    if (err != nil) {
         return ("", err);
     }
 
     (var sig, err) = t.Method.Sign(sstr, key);
-    if (err != default!) {
+    if (err != nil) {
         return ("", err);
     }
 
     t.Signature = sig;
 
-    return (sstr + "." + t.EncodeSegment(sig), default!);
+    return (sstr + "." + t.EncodeSegment(sig), default);
 }
 
 public static (@string, error) SigningString(this ref Token t) {
     var (h, err) = json.Marshal(t.Header);
-    if (err != default!) {
+    if (err != nil) {
         return ("", err);
     }
 
     (var c, err) = json.Marshal(t.Claims);
-    if (err != default!) {
+    if (err != nil) {
         return ("", err);
     }
 
-    return (t.EncodeSegment(h) + "." + t.EncodeSegment(c), default!);
+    return (t.EncodeSegment(h) + "." + t.EncodeSegment(c), default);
 }
 
 public static @string EncodeSegment(this ref Token _, slice<byte> seg) {

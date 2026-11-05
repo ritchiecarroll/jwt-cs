@@ -11,16 +11,8 @@
 
 // <ImportedTypeAliases>
 global using bigꓸInt = go.math.big_package.ΔInt;
-global using bigꓸRat = go.math.big_package.ΔRat;
-global using cryptoꓸDecrypterOpts = object;
 global using cryptoꓸPrivateKey = object;
 global using cryptoꓸPublicKey = object;
-global using jsonꓸToken = object;
-global using jsonꓸΔToken = object;
-global using timeꓸLocation = go.time_package.ΔLocation;
-global using timeꓸMonth = go.time_package.ΔMonth;
-global using timeꓸWeekday = go.time_package.ΔWeekday;
-global using x509ꓸOID = go.crypto.x509_package.ΔOID;
 // </ImportedTypeAliases>
 
 using go;
@@ -66,6 +58,17 @@ using static go.github.com.golang_jwt.jwt.jwt_package;
 // <ImplicitConversions>
 // </ImplicitConversions>
 
+// The struct types whose fields this package reaches through a pointer, as Go spells it, `p.f`:
+// go2cs-gen emits a field property on the pointer for each of their fields.
+[assembly: GoFieldAccess(typeof(NumericDate))]
+[assembly: GoFieldAccess(typeof(Parser))]
+[assembly: GoFieldAccess(typeof(Token))]
+[assembly: GoFieldAccess(typeof(Validator))]
+[assembly: GoFieldAccess(typeof(go.crypto.ecdsa_package.PrivateKey))]
+[assembly: GoFieldAccess(typeof(go.crypto.elliptic_package.CurveParams))]
+[assembly: GoFieldAccess(typeof(go.crypto.x509_package.Certificate))]
+[assembly: GoFieldAccess(typeof(go.encoding.pem_package.Block))]
+
 // Go source positions are recorded here, one `GoPositionMap` attribute per converted
 // source file in this compilation, so that `runtime.Caller` and the tracebacks built on it
 // can name the GO file and line a frame was converted from rather than the emitted C# one.
@@ -74,24 +77,24 @@ using static go.github.com.golang_jwt.jwt.jwt_package;
 // or has none - golib, the BCL and hand-written conversions - and reports its own C# position.
 
 // <GoSourcePositionMaps>
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/ecdsa.go", "ecdsa.cs", "AA8aAAwmhIKagpqCqoKqhIKUxKaCpoKWgpSCloCCtqqEgpTEqIKmgpaAgpSCpoKCrIKClJQ=", "35-37:1;41-43:2;47-49:3")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/ecdsa_utils.go", "ecdsa_utils.cs", "AAsWgpiCloKAgriCgIKAgtiCgoCCtqiCloKAgriCgIKAgpTYgoKAgrY=")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/ed25519.go", "ed25519.cs", "AAsWAAYYgoKqgqqCgpSAgraCqIKmqoKClICCtoCCvIKCpg==", "25-27:1")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/ed25519_utils.go", "ed25519_utils.cs", "AAwYgpiCloKAgriCgIK2goKAgraogpaCgIK4goCCtoKCgIK2")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/errors.go", "errors.cs", "AAkUgoKCgoKCgoKCgoKCgoKCAAUUooKCpqqizoIAAiCygoKCgpSCpoKCpoI=")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/hmac.go", "hmac.cs", "ABIqloSCmoKagqqCAAIapIKCqIKskoKCqAACFqKAgoKmkpS2", "27-29:1;33-35:2;39-41:3", "73=crypto.Hash.New;97=crypto.Hash.New")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/map_claims.go", "map_claims.cs", "AAoagqiCqIKogqiCqIKsgoKCppSCpqSUpqqCgpS0tIKCgpTIrIKqgoKmgoKm")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/none.go", "none.cs", "AA8cgoKUqoKohoCCpoKoqIKAgrY=", "18-20:1")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/parser.go", "parser.cs", "ABc+orqCpqqCAAIUgoKCqIKCgoKCgqaEuoSmgoKogpSCqoKAgvikgqiEgqaAgsqUAAIS0oKCgqaWgoCCpICCuJSCgqyEgJKUtoKEgJKUtoKogIKAgra4goKmrIKCgoKUgoKClIiCgpSUrIKUgoCCpKaClAACFKIAAhSi")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/parser_option.go", "parser_option.cs", "AAkagpK8goK8goK6goK+goK8goK8goK8goIAAxiikgADHKKSggADGIKCAAMYgoIAAxCCgr6Cgg==", "14-16:1;22-24:1;30-32:1;37-39:1;46-48:1;54-56:1;62-64:1;70-72:1;84-86:1;100-103:1;115-117:1;129-131:1;139-141:1;148-150:1")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/registered_claims.go", "registered_claims.cs", "AA5IgqiCqIKogqiCqII=")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/rsa.go", "rsa.cs", "ABQuhIKagpqCqoKqgoKUgIK4gpSClqqCgpaAgriCpoKWgIKU", "26-28:1;32-34:2;38-40:3")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/rsa_pss.go", "rsa_pss.cs", "ABU2hAALGJoACxiaAAsYroKClMSogpSClIKCpqqClJTEqIKmgpaAgpQ=", "41-43:1;58-60:2;75-77:3")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/rsa_utils.go", "rsa_utils.cs", "AAsWgoKYgpaCgIK2goCCgILYgoKAgrYAAhCCloKAgraUgoCCtoCCgILYgoKAgraogpaCgIK4goCCgIKUgIL6goKAgrY=")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/signing_method.go", "signing_method.cs", "7pIABxyigpSiprKClICCpNiygpSClA==")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/token.go", "token.cs", "AB9SoqqiAAkegoKCpoKCppSsgoKCpoKCpq6C", "", "", "41=Alg/1/1/3")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/types.go", "types.cs", "ABNMgqqCgqqCgoKUAAEYgpSUrqKqgIK2gIK2gpQABBCilICCtpSUtLSCgoKUxrSmlKaMgqY=")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/validator.go", "validator.cs", "ABqoAaKCAAISgr6ClKyAgryAgriCgILKgoCCyoKAgsqCgILMgoKAgsiCpgACFoKCgqaCpgACFoKCgqaCpgACFoKCgqaCpgACFIKCgqqCgqaChIK4qoKCuAACFIKCgqaCpgACFIKCgqaCpqqCgpS8goKU")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/ecdsa.go", "ecdsa.cs", "AA8aAAwmhIKagpqCqoKqhIKUxKaCpoKWgpSCloCCtqqEgpTEqIKmgpaAgpSCpoKCrIKClJQ=", "35-37:1;41-43:2;47-49:3")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/ecdsa_utils.go", "ecdsa_utils.cs", "AAsWgpiCloKAgriCgIKAgtiCgoCCtqiCloKAgriCgIKAgpTYgoKAgrY=")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/ed25519.go", "ed25519.cs", "AAsWAAYYgoKqgqqCgpSAgraCqIKmqoKClICCtoCCvIKCpg==", "25-27:1")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/ed25519_utils.go", "ed25519_utils.cs", "AAwYgpiCloKAgriCgIK2goKAgraogpaCgIK4goCCtoKCgIK2")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/errors.go", "errors.cs", "AAkUgoKCgoKCgoKCgoKCgoKCAAUUooKCpqqizoIAAiCygoKCgpSCpoKCpoI=")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/hmac.go", "hmac.cs", "ABIqloSCmoKagqqCAAIapIKCqIKskoKCqAACFqKAgoKmkpS2", "27-29:1;33-35:2;39-41:3", "73=crypto.Hash.New;97=crypto.Hash.New")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/map_claims.go", "map_claims.cs", "AAoagqiCqIKogqiCqIKsgoKCppSCpqSUpqqCgpS0tIKCgpTIrIKqgoKmgoKm")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/none.go", "none.cs", "AA8cgoKUqoKohoCCpoKoqIKAgrY=", "18-20:1")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/parser.go", "parser.cs", "ABc+orqCpqqCAAIUgoKCqIKCgoKCgqaEuoSmgoKogpSCqoKAgvikgqiEgqaAgsqUAAIS0oKCgqaWgoCCpICCuJSCgqyEgJKUtoKEgJKUtoKogIKAgra4goKmrIKCgoKUgoKClIiCgpSUrIKUgoCCpKaClAACFKIAAhSi")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/parser_option.go", "parser_option.cs", "AAkagpK8goK8goK6goK+goK8goK8goK8goIAAxiikgADHKKSggADGIKCAAMYgoIAAxCCgr6Cgg==", "14-16:1;22-24:1;30-32:1;37-39:1;46-48:1;54-56:1;62-64:1;70-72:1;84-86:1;100-103:1;115-117:1;129-131:1;139-141:1;148-150:1")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/registered_claims.go", "registered_claims.cs", "AA5IgqiCqIKogqiCqII=")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/rsa.go", "rsa.cs", "ABQuhIKagpqCqoKqgoKUgIK4gpSClqqCgpaAgriCpoKWgIKU", "26-28:1;32-34:2;38-40:3")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/rsa_pss.go", "rsa_pss.cs", "ABU2hAALGJoACxiaAAsYroKClMSogpSClIKCpqqClJTEqIKmgpaAgpQ=", "41-43:1;58-60:2;75-77:3")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/rsa_utils.go", "rsa_utils.cs", "AAsWgoKYgpaCgIK2goCCgILYgoKAgrYAAhCCloKAgraUgoCCtoCCgILYgoKAgraogpaCgIK4goCCgIKUgIL6goKAgrY=")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/signing_method.go", "signing_method.cs", "7pIABxyigpSiprKClICCpNiygpSClA==")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/token.go", "token.cs", "AB9SotqiAAkegoKCpoKCppSsgoKCpoKCpq6C", "", "", "44=Alg/1/1/3")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/types.go", "types.cs", "ABVMgqqCgqqCgoKUAAEYgpSUrqKqgIK2gIK2gpQABBCilICCtpSUtLSCgoKUxrSmlKaMgqY=")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/validator.go", "validator.cs", "ABqoAaKCAAISgr6ClKyAgryAgriCgILKgoCCyoKAgsqCgILMgoKAgsiCpgACFoKCgqaCpgACFoKCgqaCpgACFoKCgqaCpgACFIKCgqqCgqaChIK4qoKCuAACFIKCgqaCpgACFIKCgqaCpqqCgpS8goKU")]
 // </GoSourcePositionMaps>
 
 namespace go.github.com.golang_jwt.jwt;

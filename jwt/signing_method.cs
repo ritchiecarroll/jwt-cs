@@ -27,7 +27,7 @@ public static void RegisterSigningMethod(@string alg, Func<SigningMethod> f) {
 }
 
 public static SigningMethod /*method*/ GetSigningMethod(@string alg) {
-    SigningMethod method = default!;
+    SigningMethod method = default;
     GoFrame ᒐ = default;
     try {
         signingMethodLock.RLock();
@@ -45,7 +45,7 @@ public static SigningMethod /*method*/ GetSigningMethod(@string alg) {
 }
 
 public static slice<@string> /*algs*/ GetAlgorithms() {
-    slice<@string> algs = default!;
+    slice<@string> algs = default;
     GoFrame ᒐ = default;
     try {
         signingMethodLock.RLock();

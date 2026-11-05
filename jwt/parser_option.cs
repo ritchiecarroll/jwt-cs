@@ -10,49 +10,49 @@ partial class jwt_package {
 public static Action<ж<Parser>> WithValidMethods(slice<@string> methods) {
     var methodsʗ1 = methods;
     return (ж<Parser> p) => {
-        p.Value.validMethods = methodsʗ1;
+        p.validMethods = methodsʗ1;
     };
 }
 
 public static Action<ж<Parser>> WithJSONNumber() {
     return (ж<Parser> p) => {
-        p.Value.useJSONNumber = true;
+        p.useJSONNumber = true;
     };
 }
 
 public static Action<ж<Parser>> WithoutClaimsValidation() {
     return (ж<Parser> p) => {
-        p.Value.skipClaimsValidation = true;
+        p.skipClaimsValidation = true;
     };
 }
 
 public static Action<ж<Parser>> WithLeeway(time.Duration leeway) {
     return (ж<Parser> p) => {
-        p.Value.validator.Value.leeway = leeway;
+        p.validator.leeway = leeway;
     };
 }
 
 public static Action<ж<Parser>> WithTimeFunc(Func<time.Time> f) {
     return (ж<Parser> p) => {
-        p.Value.validator.Value.timeFunc = f;
+        p.validator.timeFunc = f;
     };
 }
 
 public static Action<ж<Parser>> WithIssuedAt() {
     return (ж<Parser> p) => {
-        p.Value.validator.Value.verifyIat = true;
+        p.validator.verifyIat = true;
     };
 }
 
 public static Action<ж<Parser>> WithExpirationRequired() {
     return (ж<Parser> p) => {
-        p.Value.validator.Value.requireExp = true;
+        p.validator.requireExp = true;
     };
 }
 
 public static Action<ж<Parser>> WithNotBeforeRequired() {
     return (ж<Parser> p) => {
-        p.Value.validator.Value.requireNbf = true;
+        p.validator.requireNbf = true;
     };
 }
 
@@ -61,7 +61,7 @@ public static Action<ж<Parser>> WithAudience(params ꓸꓸꓸstring audʗp) {
 
     var audʗ1 = aud;
     return (ж<Parser> p) => {
-        p.Value.validator.Value.expectedAud = audʗ1;
+        p.validator.expectedAud = audʗ1;
     };
 }
 
@@ -70,32 +70,32 @@ public static Action<ж<Parser>> WithAllAudiences(params ꓸꓸꓸstring audʗp)
 
     var audʗ1 = aud;
     return (ж<Parser> p) => {
-        p.Value.validator.Value.expectedAud = audʗ1;
-        p.Value.validator.Value.expectAllAud = true;
+        p.validator.expectedAud = audʗ1;
+        p.validator.expectAllAud = true;
     };
 }
 
 public static Action<ж<Parser>> WithIssuer(@string iss) {
     return (ж<Parser> p) => {
-        p.Value.validator.Value.expectedIss = iss;
+        p.validator.expectedIss = iss;
     };
 }
 
 public static Action<ж<Parser>> WithSubject(@string sub) {
     return (ж<Parser> p) => {
-        p.Value.validator.Value.expectedSub = sub;
+        p.validator.expectedSub = sub;
     };
 }
 
 public static Action<ж<Parser>> WithPaddingAllowed() {
     return (ж<Parser> p) => {
-        p.Value.decodePaddingAllowed = true;
+        p.decodePaddingAllowed = true;
     };
 }
 
 public static Action<ж<Parser>> WithStrictDecoding() {
     return (ж<Parser> p) => {
-        p.Value.decodeStrict = true;
+        p.decodeStrict = true;
     };
 }
 

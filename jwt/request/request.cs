@@ -7,33 +7,33 @@ using net;
 
 partial class request_package {
 
-public static (ж<jwt.Token> token, error err) ParseFromRequest(ж<http.Request> Ꮡreq, Extractor extractor, Func<ж<jwt.Token>, (any, error)> keyFunc, params Span<Action<ж<fromRequestParser>>> optionsʗp) {
-    error err = default!;
+public static (ж<jwt.Token> token, error err) ParseFromRequest(ж<http.Request> req, Extractor extractor, Func<ж<jwt.Token>, (any, error)> keyFunc, params Span<Action<ж<fromRequestParser>>> optionsʗp) {
+    error err = default;
     var options = optionsʗp.sslice();
 
-    var p = Ꮡ(new fromRequestParser(Ꮡreq, extractor, default!, nil));
+    var p = Ꮡ(new fromRequestParser(req, extractor, default, nil));
 
     foreach (var (_, option) in options) {
         option(p);
     }
 
-    if ((~p).claims == default!) {
-        p.Value.claims = new jwt.MapClaims(new map<@string, any>{});
+    if (p.claims == nil) {
+        p.claims = new jwt.MapClaims(new map<@string, any>{});
     }
-    if ((~p).parser == nil) {
-        p.Value.parser = Ꮡ(new jwt.Parser(nil));
-    }
-
-    (var tokenString, err) = (~p).extractor.ExtractToken(Ꮡreq);
-    if (err != default!) {
-        return (default!, err);
+    if (p.parser == nil) {
+        p.parser = Ꮡ(new jwt.Parser());
     }
 
-    return (~p).parser.ParseWithClaims(tokenString, (~p).claims, keyFunc);
+    (var tokenString, err) = p.extractor.ExtractToken(req);
+    if (err != nil) {
+        return (default, err);
+    }
+
+    return p.parser.ParseWithClaims(tokenString, p.claims, keyFunc);
 }
 
-public static (ж<jwt.Token> token, error err) ParseFromRequestWithClaims(ж<http.Request> Ꮡreq, Extractor extractor, jwt.Claims claims, Func<ж<jwt.Token>, (any, error)> keyFunc) {
-    return ParseFromRequest(Ꮡreq, extractor, keyFunc, WithClaims(claims));
+public static (ж<jwt.Token> token, error err) ParseFromRequestWithClaims(ж<http.Request> req, Extractor extractor, jwt.Claims claims, Func<ж<jwt.Token>, (any, error)> keyFunc) {
+    return ParseFromRequest(req, extractor, keyFunc, WithClaims(claims));
 }
 
 public partial struct fromRequestParser {
@@ -47,7 +47,7 @@ public partial struct fromRequestParser {
 
 public static Action<ж<fromRequestParser>> WithClaims(jwt.Claims claims) {
     return (ж<fromRequestParser> p) => {
-        p.Value.claims = claims;
+        p.claims = claims;
     };
 }
 
@@ -55,7 +55,7 @@ public static Action<ж<fromRequestParser>> WithParser(ж<jwt.Parser> Ꮡparser)
     ref var parser = ref Ꮡparser.DerefOrNull();
 
     return (ж<fromRequestParser> p) => {
-        p.Value.parser = Ꮡparser;
+        p.parser = Ꮡparser;
     };
 }
 

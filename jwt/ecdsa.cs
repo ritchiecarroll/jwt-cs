@@ -42,7 +42,7 @@ public static @string Alg(this ref SigningMethodECDSA m) {
 }
 
 public static error Verify(this ref SigningMethodECDSA m, @string signingString, slice<byte> sig, any key) {
-    ж<ecdsa.PublicKey> ecdsaKey = default!;
+    ж<ecdsa.PublicKey> ecdsaKey = default;
     switch (key.type()) {
     case ж<ecdsa.PublicKey> k: {
         ecdsaKey = k;
@@ -67,8 +67,8 @@ public static error Verify(this ref SigningMethodECDSA m, @string signingString,
     hasher.Write(slice<byte>(signingString));
 
     {
-        var verifystatus = ecdsa.Verify(ecdsaKey, hasher.Sum(default!), r, s); if (verifystatus) {
-            return default!;
+        var verifystatus = ecdsa.Verify(ecdsaKey, hasher.Sum(default), r, s); if (verifystatus) {
+            return default;
         }
     }
 
@@ -76,7 +76,7 @@ public static error Verify(this ref SigningMethodECDSA m, @string signingString,
 }
 
 public static (slice<byte>, error) Sign(this ref SigningMethodECDSA m, @string signingString, any key) {
-    ж<ecdsa.PrivateKey> ecdsaKey = default!;
+    ж<ecdsa.PrivateKey> ecdsaKey = default;
     switch (key.type()) {
     case ж<ecdsa.PrivateKey> k: {
         ecdsaKey = k;
@@ -84,22 +84,22 @@ public static (slice<byte>, error) Sign(this ref SigningMethodECDSA m, @string s
     }
     default: {
         var k = key;
-        return (default!, newError("ECDSA sign expects *ecdsa.PrivateKey", ErrInvalidKeyType));
+        return (default, newError("ECDSA sign expects *ecdsa.PrivateKey", ErrInvalidKeyType));
     }}
 
     if (!m.Hash.Available()) {
-        return (default!, ErrHashUnavailable);
+        return (default, ErrHashUnavailable);
     }
 
     var hasher = m.Hash.New();
     hasher.Write(slice<byte>(signingString));
 
     {
-        var (r, s, err) = ecdsa.Sign(rand.Reader, ecdsaKey, hasher.Sum(default!)); if (err == default!){
-            nint curveBits = (~ecdsaKey).Curve.Params().Value.BitSize;
+        var (r, s, err) = ecdsa.Sign(rand.Reader, ecdsaKey, hasher.Sum(default)); if (err == nil) {
+            nint curveBits = ecdsaKey.Curve.Params().BitSize;
 
             if (m.CurveBits != curveBits) {
-                return (default!, ErrInvalidKey);
+                return (default, ErrInvalidKey);
             }
 
             nint keyBytes = curveBits / 8;
@@ -111,9 +111,9 @@ public static (slice<byte>, error) Sign(this ref SigningMethodECDSA m, @string s
             r.FillBytes(@out.slice(0, keyBytes));
             s.FillBytes(@out.slice(keyBytes));
 
-            return (@out, default!);
+            return (@out, default);
         } else {
-            return (default!, err);
+            return (default, err);
         }
     }
 }

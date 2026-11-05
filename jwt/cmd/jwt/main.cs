@@ -41,7 +41,7 @@ internal static void Main() {
     flag.Parse();
 
     {
-        var err = start(); if (err != default!) {
+        var err = start(); if (err != nil) {
             fmt.Fprintf(new os.FileжWriter(os.Stderr), "Error: %v\n"u8, err);
             os.Exit(1);
         }
@@ -67,33 +67,36 @@ internal static error start() {
 }
 
 internal static (slice<byte>, error retErr) loadData(@string p) {
-    slice<byte> _ᴛ1 = default!;
-    error retErr = default!;
+    slice<byte> _ᴛ1 = default;
+    error retErr = default;
     GoFrame ᒐ = default;
     try {
         if (p == ""u8) {
-            (_ᴛ1, retErr) = (default!, fmt.Errorf("no path specified"u8)); goto ᒐdone;
+            (_ᴛ1, retErr) = (default, fmt.Errorf("no path specified"u8)); goto ᒐdone;
         }
 
-        Δio.Reader rdr = default!;
+        Δio.Reader rdr = default;
         var exprᴛ1 = p;
-        if (exprᴛ1 == "-"u8) {
+        switch (ᐧ) {
+        case {} when exprᴛ1 == "-"u8: {
             rdr = new os_FileжReader(os.Stdin);
+            break;
         }
-        else if (exprᴛ1 == "+"u8) {
-            (_ᴛ1, retErr) = (slice<byte>("{}"u8), default!); goto ᒐdone;
+        case {} when exprᴛ1 == "+"u8: {
+            (_ᴛ1, retErr) = (slice<byte>("{}"u8), default); goto ᒐdone;
         }
-        else { /* default: */
+        default: {
             var (f, err) = os.Open(p);
-            if (err != default!) {
-                (_ᴛ1, retErr) = (default!, err); goto ᒐdone;
+            if (err != nil) {
+                (_ᴛ1, retErr) = (default, err); goto ᒐdone;
             }
             rdr = new os_FileжReader(f);
             var fʗ1 = f;
             defer(() => {
                 retErr = errors.Join(retErr, fʗ1.Close());
             }, ref ᒐ);
-        }
+            break;
+        }}
 
         (_ᴛ1, retErr) = Δio.ReadAll(rdr);
     }
@@ -103,16 +106,16 @@ internal static (slice<byte>, error retErr) loadData(@string p) {
 }
 
 internal static error printJSON(any j) {
-    slice<byte> @out = default!;
-    error err = default!;
+    slice<byte> @out = default;
+    error err = default;
 
-    if (!flagCompact.Value){
+    if (!flagCompact.Value) {
         (@out, err) = json.MarshalIndent(j, "", "    ");
     } else {
         (@out, err) = json.Marshal(j);
     }
 
-    if (err == default!) {
+    if (err == nil) {
         fmt.Println((@string)@out);
     }
 
@@ -121,22 +124,22 @@ internal static error printJSON(any j) {
 
 internal static error verifyToken() {
     var (tokData, err) = loadData(flagVerify.Value);
-    if (err != default!) {
+    if (err != nil) {
         return fmt.Errorf("couldn't read token: %w"u8, err);
     }
 
-    tokData = Δregexp.MustCompile(@"\s*$").ReplaceAll(tokData, new byte[]{}.slice());
+    tokData = Δregexp.MustCompile(@"\s*$").ReplaceAll(tokData, slice<byte>([]));
     if (flagDebug.Value) {
         fmt.Fprintf(new os.FileжWriter(os.Stderr), "Token len: %v bytes\n"u8, len(tokData));
     }
 
     (var token, err) = jwt.Parse((@string)tokData, (ж<jwt.Token> t) => {
         if (isNone()) {
-            return (jwt.UnsafeAllowNoneSignatureType, default!);
+            return (jwt.UnsafeAllowNoneSignatureType, default);
         }
         var (data, errΔ1) = loadData(flagKey.Value);
-        if (errΔ1 != default!) {
-            return (default!, errΔ1);
+        if (errΔ1 != nil) {
+            return (default, errΔ1);
         }
         switch (ᐧ) {
         case {} when isEs(): {
@@ -151,41 +154,40 @@ internal static error verifyToken() {
             return jwt.ParseEdPublicKeyFromPEM(data);
         }
         default: {
-            return (data, default!);
+            return (data, default);
         }}
 
     });
 
-    if (err != default!) {
+    if (err != nil) {
         return fmt.Errorf("couldn't parse token: %w"u8, err);
     }
 
     if (flagDebug.Value) {
-        fmt.Fprintf(new os.FileжWriter(os.Stderr), "Header:\n%v\n"u8, (~token).Header);
-        fmt.Fprintf(new os.FileжWriter(os.Stderr), "Claims:\n%v\n"u8, (~token).Claims);
+        fmt.Fprintf(new os.FileжWriter(os.Stderr), "Header:\n%v\n"u8, token.Header);
+        fmt.Fprintf(new os.FileжWriter(os.Stderr), "Claims:\n%v\n"u8, token.Claims);
     }
 
     {
-        var errΔ2 = printJSON((~token).Claims); if (errΔ2 != default!) {
+        var errΔ2 = printJSON(token.Claims); if (errΔ2 != nil) {
             return fmt.Errorf("failed to output claims: %w"u8, errΔ2);
         }
     }
 
-    return default!;
+    return default;
 }
 
 internal static error signToken() {
     var (tokData, err) = loadData(flagSign.Value);
-    if (err != default!){
+    if (err != nil) {
         return fmt.Errorf("couldn't read token: %w"u8, err);
-    } else 
-    if (flagDebug.Value) {
+    } else if (flagDebug.Value) {
         fmt.Fprintf(new os.FileжWriter(os.Stderr), "Token: %v bytes"u8, len(tokData));
     }
 
     ref var claims = ref heap<jwt.MapClaims>(out var Ꮡclaims);
     {
-        var errΔ1 = json.Unmarshal(tokData, Ꮡclaims); if (errΔ1 != default!) {
+        var errΔ1 = json.Unmarshal(tokData, Ꮡclaims); if (errΔ1 != nil) {
             return fmt.Errorf("couldn't parse claims JSON: %w"u8, errΔ1);
         }
     }
@@ -196,18 +198,18 @@ internal static error signToken() {
         }
     }
 
-    any key = default!;
-    if (isNone()){
+    any key = default;
+    if (isNone()) {
         key = jwt.UnsafeAllowNoneSignatureType;
     } else {
         (key, err) = loadData(flagKey.Value);
-        if (err != default!) {
+        if (err != nil) {
             return fmt.Errorf("couldn't read key: %w"u8, err);
         }
     }
 
     var alg = jwt.GetSigningMethod(flagAlg.Value);
-    if (alg == default!) {
+    if (alg == nil) {
         return fmt.Errorf("couldn't find signing method: %v"u8, flagAlg.Value);
     }
 
@@ -215,7 +217,7 @@ internal static error signToken() {
 
     if (len(flagHead) > 0) {
         foreach (var (k, v) in flagHead) {
-            token.Value.Header[k] = v;
+            token.Header[k] = v;
         }
     }
 
@@ -226,7 +228,7 @@ internal static error signToken() {
             return fmt.Errorf("couldn't convert key data to key"u8);
         }
         (key, err) = jwt.ParseECPrivateKeyFromPEM(k);
-        if (err != default!) {
+        if (err != nil) {
             return err;
         }
         break;
@@ -237,7 +239,7 @@ internal static error signToken() {
             return fmt.Errorf("couldn't convert key data to key"u8);
         }
         (key, err) = jwt.ParseRSAPrivateKeyFromPEM(k);
-        if (err != default!) {
+        if (err != nil) {
             return err;
         }
         break;
@@ -248,52 +250,52 @@ internal static error signToken() {
             return fmt.Errorf("couldn't convert key data to key"u8);
         }
         (key, err) = jwt.ParseEdPrivateKeyFromPEM(k);
-        if (err != default!) {
+        if (err != nil) {
             return err;
         }
         break;
     }}
 
     (var @out, err) = token.SignedString(key);
-    if (err != default!) {
+    if (err != nil) {
         return fmt.Errorf("error signing token: %w"u8, err);
     }
     fmt.Println(@out);
 
-    return default!;
+    return default;
 }
 
 internal static error showToken() {
     var (tokData, err) = loadData(flagShow.Value);
-    if (err != default!) {
+    if (err != nil) {
         return fmt.Errorf("couldn't read token: %w"u8, err);
     }
 
-    tokData = Δregexp.MustCompile(@"\s*$").ReplaceAll(tokData, new byte[]{}.slice());
+    tokData = Δregexp.MustCompile(@"\s*$").ReplaceAll(tokData, slice<byte>([]));
     if (flagDebug.Value) {
         fmt.Fprintf(new os.FileжWriter(os.Stderr), "Token len: %v bytes\n"u8, len(tokData));
     }
 
     (var token, _, err) = jwt.NewParser().ParseUnverified((@string)tokData, new jwt.MapClaims(0));
-    if (err != default!) {
+    if (err != nil) {
         return fmt.Errorf("malformed token: %w"u8, err);
     }
 
     fmt.Println("Header:");
     {
-        var errΔ1 = printJSON((~token).Header); if (errΔ1 != default!) {
+        var errΔ1 = printJSON(token.Header); if (errΔ1 != nil) {
             return fmt.Errorf("failed to output header: %w"u8, errΔ1);
         }
     }
 
     fmt.Println("Claims:");
     {
-        var errΔ2 = printJSON((~token).Claims); if (errΔ2 != default!) {
+        var errΔ2 = printJSON(token.Claims); if (errΔ2 != nil) {
             return fmt.Errorf("failed to output claims: %w"u8, errΔ2);
         }
     }
 
-    return default!;
+    return default;
 }
 
 internal static bool isEs() {
@@ -320,7 +322,7 @@ internal static @string algHelp() {
     Ꮡb.WriteString("signing algorithm identifier, one of\n");
     foreach (var (i, alg) in algs) {
         if (i > 0) {
-            if (i % 7 == 0){
+            if (i % 7 == 0) {
                 Ꮡb.WriteString(",\n");
             } else {
                 Ꮡb.WriteString(", ");
@@ -344,7 +346,7 @@ public static error Set(this ArgList l, @string arg) {
         return fmt.Errorf("invalid argument '%v'.  Must use format 'key=value'. %v"u8, arg, parts);
     }
     l[parts[0]] = parts[1];
-    return default!;
+    return default;
 }
 
 } // end main_package

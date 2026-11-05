@@ -21,7 +21,7 @@ public static (@string, error) ExtractToken(this HeaderExtractor e, ж<http.Requ
     foreach (var (_, header) in e) {
         {
             @string ah = req.Header.Get(header); if (ah != ""u8) {
-                return (ah, default!);
+                return (ah, default);
             }
         }
     }
@@ -38,7 +38,7 @@ public static (@string, error) ExtractToken(this ArgumentExtractor e, ж<http.Re
     foreach (var (_, arg) in e) {
         {
             @string ah = req.Form.Get(arg); if (ah != ""u8) {
-                return (ah, default!);
+                return (ah, default);
             }
         }
     }
@@ -48,13 +48,12 @@ public static (@string, error) ExtractToken(this ArgumentExtractor e, ж<http.Re
 
 partial struct MultiExtractor /*[]Extractor*/;
 
-public static (@string, error) ExtractToken(this MultiExtractor e, ж<http.Request> Ꮡreq) {
+public static (@string, error) ExtractToken(this MultiExtractor e, ж<http.Request> req) {
     foreach (var (_, extractor) in e) {
         {
-            var (tok, err) = extractor.ExtractToken(Ꮡreq); if (tok != ""u8){
-                return (tok, default!);
-            } else 
-            if (!errors.Is(err, ErrNoTokenInRequest)) {
+            var (tok, err) = extractor.ExtractToken(req); if (tok != ""u8) {
+                return (tok, default);
+            } else if (!errors.Is(err, ErrNoTokenInRequest)) {
                 return ("", err);
             }
         }
@@ -67,9 +66,9 @@ partial struct PostExtractionFilter {
     public Func<@string, (@string, error)> Filter;
 }
 
-public static (@string, error) ExtractToken(this ref PostExtractionFilter e, ж<http.Request> Ꮡreq) {
+public static (@string, error) ExtractToken(this ref PostExtractionFilter e, ж<http.Request> req) {
     {
-        var (tok, err) = e.Extractor.ExtractToken(Ꮡreq); if (tok != ""u8){
+        var (tok, err) = e.Extractor.ExtractToken(req); if (tok != ""u8) {
             return e.Filter(tok);
         } else {
             return ("", err);
@@ -87,7 +86,7 @@ public static (@string, error) ExtractToken(this BearerExtractor e, ж<http.Requ
     if (len(tokenHeader) < 7 || !strings.EqualFold(tokenHeader[..7], "bearer ")) {
         return ("", ErrNoTokenInRequest);
     }
-    return (tokenHeader[7..], default!);
+    return (tokenHeader[7..], default);
 }
 
 } // end request_package

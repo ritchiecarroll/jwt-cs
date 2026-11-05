@@ -9,9 +9,11 @@ using encoding;
 
 partial class jwt_package {
 
-public static time.Duration TimePrecision = time.ΔSecond;
+public static readonly ж<time.Duration> ᏑTimePrecision = new StaticBox<time.Duration>(time.ΔSecond);
+public static ref time.Duration TimePrecision => ref ((StaticBox<time.Duration>)ᏑTimePrecision).ValueSlot;
 
-public static bool MarshalSingleStringAsArray = true;
+public static readonly ж<bool> ᏑMarshalSingleStringAsArray = new StaticBox<bool>(true);
+public static ref bool MarshalSingleStringAsArray => ref ((StaticBox<bool>)ᏑMarshalSingleStringAsArray).ValueSlot;
 
 partial struct NumericDate {
     /*embed*/ public time_package.Time Time;
@@ -27,34 +29,34 @@ internal static ж<NumericDate> newNumericDateFromSeconds(float64 f) {
 }
 
 public static (slice<byte> b, error err) MarshalJSON(this NumericDate date) {
-    nint prec = default!;
+    nint prec = default;
     if (TimePrecision < time.ΔSecond) {
-        prec = (nint)math.Log10((float64)(int64)time.ΔSecond / (float64)(int64)TimePrecision);
+        prec = (nint)math.Log10((float64)time.ΔSecond / (float64)TimePrecision);
     }
     var truncatedDate = date.Time.Truncate(TimePrecision);
 
     @string seconds = strconv.FormatInt(truncatedDate.Unix(), 10);
-    @string nanosecondsOffset = strconv.FormatFloat((float64)truncatedDate.Nanosecond() / (float64)(int64)time.ΔSecond, (rune)'f', prec, 64);
+    @string nanosecondsOffset = strconv.FormatFloat((float64)truncatedDate.Nanosecond() / (float64)time.ΔSecond, (byte)'f', prec, 64);
 
     var output = appendꓸꓸꓸ(slice<byte>(seconds), slice<byte>(nanosecondsOffset)[1..]);
 
-    return (output, default!);
+    return (output, default);
 }
 
 public static error /*err*/ UnmarshalJSON(this ref NumericDate date, slice<byte> b) {
-    error err = default!;
+    error err = default;
 
     ref var number = ref heap(new json.Number(), out var Ꮡnumber);
-    float64 f = default!;
+    float64 f = default;
 
     {
-        err = json.Unmarshal(b, Ꮡnumber); if (err != default!) {
+        err = json.Unmarshal(b, Ꮡnumber); if (err != nil) {
             return fmt.Errorf("could not parse NumericData: %w"u8, err);
         }
     }
 
     {
-        (f, err) = number.Float64(); if (err != default!) {
+        (f, err) = number.Float64(); if (err != nil) {
             return fmt.Errorf("could not convert json number value to float: %w"u8, err);
         }
     }
@@ -62,23 +64,23 @@ public static error /*err*/ UnmarshalJSON(this ref NumericDate date, slice<byte>
     var n = newNumericDateFromSeconds(f);
     date = n.Value;
 
-    return default!;
+    return default;
 }
 
 partial struct ClaimStrings /*[]@string*/;
 
 public static error /*err*/ UnmarshalJSON(this ref ClaimStrings s, slice<byte> data) {
-    error err = default!;
+    error err = default;
 
     ref var value = ref heap<any>(out var Ꮡvalue);
 
     {
-        err = json.Unmarshal(data, Ꮡvalue); if (err != default!) {
+        err = json.Unmarshal(data, Ꮡvalue); if (err != nil) {
             return err;
         }
     }
 
-    slice<@string> aud = default!;
+    slice<@string> aud = default;
 
     switch (value.type()) {
     case @string v: {
@@ -100,7 +102,7 @@ public static error /*err*/ UnmarshalJSON(this ref ClaimStrings s, slice<byte> d
         break;
     }
     case null: {
-        return default!;
+        return default;
     }
     default: {
         var v = value;

@@ -14,59 +14,59 @@ public static error ErrNotEdPrivateKey = errors.New("key is not a valid Ed25519 
 public static error ErrNotEdPublicKey = errors.New("key is not a valid Ed25519 public key");
 
 public static (cryptoꓸPrivateKey, error) ParseEdPrivateKeyFromPEM(slice<byte> key) {
-    error err = default!;
+    error err = default;
 
-    ж<pem.Block> block = default!;
+    ж<pem.Block> block = default;
     {
         (block, _) = pem.Decode(key); if (block == nil) {
-            return (default!, ErrKeyMustBePEMEncoded);
+            return (default, ErrKeyMustBePEMEncoded);
         }
     }
 
-    any parsedKey = default!;
+    any parsedKey = default;
     {
-        (parsedKey, err) = x509.ParsePKCS8PrivateKey((~block).Bytes); if (err != default!) {
-            return (default!, err);
+        (parsedKey, err) = x509.ParsePKCS8PrivateKey(block.Bytes); if (err != nil) {
+            return (default, err);
         }
     }
 
-    ed25519.PrivateKey pkey = default!;
-    bool ok = default!;
+    ed25519.PrivateKey pkey = default;
+    bool ok = default;
     {
         (pkey, ok) = parsedKey._<ed25519.PrivateKey>(ᐧ); if (!ok) {
-            return (default!, ErrNotEdPrivateKey);
+            return (default, ErrNotEdPrivateKey);
         }
     }
 
-    return (pkey, default!);
+    return (pkey, default);
 }
 
 public static (cryptoꓸPublicKey, error) ParseEdPublicKeyFromPEM(slice<byte> key) {
-    error err = default!;
+    error err = default;
 
-    ж<pem.Block> block = default!;
+    ж<pem.Block> block = default;
     {
         (block, _) = pem.Decode(key); if (block == nil) {
-            return (default!, ErrKeyMustBePEMEncoded);
+            return (default, ErrKeyMustBePEMEncoded);
         }
     }
 
-    any parsedKey = default!;
+    any parsedKey = default;
     {
-        (parsedKey, err) = x509.ParsePKIXPublicKey((~block).Bytes); if (err != default!) {
-            return (default!, err);
+        (parsedKey, err) = x509.ParsePKIXPublicKey(block.Bytes); if (err != nil) {
+            return (default, err);
         }
     }
 
-    ed25519.PublicKey pkey = default!;
-    bool ok = default!;
+    ed25519.PublicKey pkey = default;
+    bool ok = default;
     {
         (pkey, ok) = parsedKey._<ed25519.PublicKey>(ᐧ); if (!ok) {
-            return (default!, ErrNotEdPublicKey);
+            return (default, ErrNotEdPublicKey);
         }
     }
 
-    return (pkey, default!);
+    return (pkey, default);
 }
 
 } // end jwt_package

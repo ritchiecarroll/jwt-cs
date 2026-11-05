@@ -35,28 +35,28 @@ public static (@string, error) GetSubject(this MapClaims m) {
 internal static (ж<NumericDate>, error) parseNumericDate(this MapClaims m, @string key) {
     var (v, ok) = m[key, ꟷ];
     if (!ok) {
-        return (default!, default!);
+        return (default, default);
     }
 
     switch (v.type()) {
     case float64 exp: {
         if (exp == 0D) {
-            return (default!, default!);
+            return (default, default);
         }
 
-        return (newNumericDateFromSeconds(exp), default!);
+        return (newNumericDateFromSeconds(exp), default);
     }
     case json.Number exp: {
         var (vΔ1, _) = exp.Float64();
 
-        return (newNumericDateFromSeconds(vΔ1), default!);
+        return (newNumericDateFromSeconds(vΔ1), default);
     }}
 
-    return (default!, newError(fmt.Sprintf("%s is invalid"u8, key), ErrInvalidType));
+    return (default, newError(fmt.Sprintf("%s is invalid"u8, key), ErrInvalidType));
 }
 
 internal static (ClaimStrings, error) parseClaimsString(this MapClaims m, @string key) {
-    slice<@string> cs = default!;
+    slice<@string> cs = default;
     switch (m[key].type()) {
     case @string v: {
         cs = append(cs, v);
@@ -70,23 +70,23 @@ internal static (ClaimStrings, error) parseClaimsString(this MapClaims m, @strin
         foreach (var (_, a) in v) {
             var (vs, ok) = a._<@string>(ᐧ);
             if (!ok) {
-                return (default!, newError(fmt.Sprintf("%s is invalid"u8, key), ErrInvalidType));
+                return (default, newError(fmt.Sprintf("%s is invalid"u8, key), ErrInvalidType));
             }
             cs = append(cs, vs);
         }
         break;
     }}
 
-    return (cs, default!);
+    return (cs, default);
 }
 
 internal static (@string, error) parseString(this MapClaims m, @string key) {
-    bool ok = default!;
-    any raw = default!;
-    @string iss = default!;
+    bool ok = default;
+    any raw = default;
+    @string iss = default;
     (raw, ok) = m[key, ꟷ];
     if (!ok) {
-        return ("", default!);
+        return ("", default);
     }
 
     (iss, ok) = raw._<@string>(ᐧ);
@@ -94,7 +94,7 @@ internal static (@string, error) parseString(this MapClaims m, @string key) {
         return ("", newError(fmt.Sprintf("%s is invalid"u8, key), ErrInvalidType));
     }
 
-    return (iss, default!);
+    return (iss, default);
 }
 
 } // end jwt_package

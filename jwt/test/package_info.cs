@@ -10,15 +10,8 @@
 // importing type aliases at a namespace level.
 
 // <ImportedTypeAliases>
-global using cryptoꓸDecrypterOpts = object;
 global using cryptoꓸPrivateKey = object;
 global using cryptoꓸPublicKey = object;
-global using jwtꓸVerificationKey = object;
-global using osꓸDirEntry = go.io.fs_package.DirEntry;
-global using osꓸFileInfo = go.io.fs_package.FileInfo;
-global using osꓸFileMode = go.io.fs_package.FileMode;
-global using osꓸPathError = go.io.fs_package.PathError;
-global using osꓸSignal = go.os_package.ΔSignal;
 // </ImportedTypeAliases>
 
 using go;
@@ -58,7 +51,7 @@ using static go.github.com.golang_jwt.jwt.v5.test_package;
 // or has none - golib, the BCL and hand-written conversions - and reports its own C# position.
 
 // <GoSourcePositionMaps>
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/test/helpers.go", "helpers.cs", "AAwWgoKClIKClKaCgoKUgoKUqIKClIKmpoKCgpSCgpSmgoKClIKClA==")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/test/helpers.go", "helpers.cs", "AAwWgoKClIKClKaCgoKUgoKUqIKClIKmpoKCgpSCgpSmgoKClIKClA==")]
 // </GoSourcePositionMaps>
 
 namespace go.github.com.golang_jwt.jwt.v5;

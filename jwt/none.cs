@@ -14,7 +14,7 @@ public partial struct signingMethodNone {
 public partial struct unsafeNoneMagicConstant /*@string*/;
 
 [GoInit] internal static void initΔ3() {
-    SigningMethodNone = Ꮡ(new signingMethodNone(nil));
+    SigningMethodNone = Ꮡ(new signingMethodNone());
     NoneSignatureTypeDisallowedError = newError("'none' signature type is not allowed", ErrTokenUnverifiable);
 
     RegisterSigningMethod(SigningMethodNone.Alg(), () => new signingMethodNoneжSigningMethod(SigningMethodNone));
@@ -34,17 +34,17 @@ public static error /*err*/ Verify(this ref signingMethodNone m, @string signing
         return newError("'none' signing method with non-empty signature", ErrTokenUnverifiable);
     }
 
-    return default!;
+    return default;
 }
 
 public static (slice<byte>, error) Sign(this ref signingMethodNone m, @string signingString, any key) {
     {
         var (_, ok) = key._<unsafeNoneMagicConstant>(ᐧ); if (ok) {
-            return (new byte[]{}.slice(), default!);
+            return (slice<byte>([]), default);
         }
     }
 
-    return (default!, NoneSignatureTypeDisallowedError);
+    return (default, NoneSignatureTypeDisallowedError);
 }
 
 } // end jwt_package

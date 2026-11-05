@@ -64,7 +64,7 @@ public static ж<SigningMethodRSAPSS> SigningMethodPS512;
 }
 
 public static error Verify(this ref SigningMethodRSAPSS m, @string signingString, slice<byte> sig, any key) {
-    ж<rsa.PublicKey> rsaKey = default!;
+    ж<rsa.PublicKey> rsaKey = default;
     switch (key.type()) {
     case ж<rsa.PublicKey> k: {
         rsaKey = k;
@@ -86,11 +86,11 @@ public static error Verify(this ref SigningMethodRSAPSS m, @string signingString
         opts = m.VerifyOptions;
     }
 
-    return rsa.VerifyPSS(rsaKey, m.Hash, hasher.Sum(default!), sig, opts);
+    return rsa.VerifyPSS(rsaKey, m.Hash, hasher.Sum(default), sig, opts);
 }
 
 public static (slice<byte>, error) Sign(this ref SigningMethodRSAPSS m, @string signingString, any key) {
-    ж<rsa.PrivateKey> rsaKey = default!;
+    ж<rsa.PrivateKey> rsaKey = default;
 
     switch (key.type()) {
     case ж<rsa.PrivateKey> k: {
@@ -99,21 +99,21 @@ public static (slice<byte>, error) Sign(this ref SigningMethodRSAPSS m, @string 
     }
     default: {
         var k = key;
-        return (default!, newError("RSA-PSS sign expects *rsa.PrivateKey", ErrInvalidKeyType));
+        return (default, newError("RSA-PSS sign expects *rsa.PrivateKey", ErrInvalidKeyType));
     }}
 
     if (!m.Hash.Available()) {
-        return (default!, ErrHashUnavailable);
+        return (default, ErrHashUnavailable);
     }
 
     var hasher = m.Hash.New();
     hasher.Write(slice<byte>(signingString));
 
     {
-        var (sigBytes, err) = rsa.SignPSS(rand.Reader, rsaKey, m.Hash, hasher.Sum(default!), m.Options); if (err == default!){
-            return (sigBytes, default!);
+        var (sigBytes, err) = rsa.SignPSS(rand.Reader, rsaKey, m.Hash, hasher.Sum(default), m.Options); if (err == nil) {
+            return (sigBytes, default);
         } else {
-            return (default!, err);
+            return (default, err);
         }
     }
 }

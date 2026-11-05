@@ -12,11 +12,11 @@ partial class test_package {
 
 public static ж<rsa.PrivateKey> LoadRSAPrivateKeyFromDisk(@string location) {
     var (keyData, e) = os.ReadFile(location);
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
     (var key, e) = jwt.ParseRSAPrivateKeyFromPEM(keyData);
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
     return key;
@@ -24,11 +24,11 @@ public static ж<rsa.PrivateKey> LoadRSAPrivateKeyFromDisk(@string location) {
 
 public static ж<rsa.PublicKey> LoadRSAPublicKeyFromDisk(@string location) {
     var (keyData, e) = os.ReadFile(location);
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
     (var key, e) = jwt.ParseRSAPublicKeyFromPEM(keyData);
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
     return key;
@@ -38,7 +38,7 @@ public static @string MakeSampleToken(jwt.Claims c, jwt.SigningMethod method, an
     var token = jwt.NewWithClaims(method, c);
     var (s, e) = token.SignedString(key);
 
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
 
@@ -47,11 +47,11 @@ public static @string MakeSampleToken(jwt.Claims c, jwt.SigningMethod method, an
 
 public static cryptoꓸPrivateKey LoadECPrivateKeyFromDisk(@string location) {
     var (keyData, e) = os.ReadFile(location);
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
     (var key, e) = jwt.ParseECPrivateKeyFromPEM(keyData);
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
     return key.OrTypedNil();
@@ -59,11 +59,11 @@ public static cryptoꓸPrivateKey LoadECPrivateKeyFromDisk(@string location) {
 
 public static cryptoꓸPublicKey LoadECPublicKeyFromDisk(@string location) {
     var (keyData, e) = os.ReadFile(location);
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
     (var key, e) = jwt.ParseECPublicKeyFromPEM(keyData);
-    if (e != default!) {
+    if (e != nil) {
         throw panic(e.Error());
     }
     return key.OrTypedNil();

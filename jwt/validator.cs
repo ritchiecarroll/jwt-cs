@@ -28,35 +28,35 @@ public static ж<Validator> NewValidator(params Span<Action<ж<Parser>>> optsʗp
     var opts = optsʗp.sslice();
 
     var p = NewParser(opts.ꓸꓸꓸ);
-    return (~p).validator;
+    return p.validator;
 }
 
 public static error Validate(this ref Validator v, Claims claims) {
-    time.Time now = default!;
+    time.Time now = default;
     slice<error> errs = new slice<error>(0, 6);
-    error err = default!;
+    error err = default;
 
-    if (v.timeFunc != default!){
+    if (v.timeFunc != nil) {
         now = v.timeFunc();
     } else {
         now = time.Now();
     }
 
     {
-        err = v.verifyExpiresAt(claims, now, v.requireExp); if (err != default!) {
+        err = v.verifyExpiresAt(claims, now, v.requireExp); if (err != nil) {
             errs = append(errs, err);
         }
     }
 
     {
-        err = v.verifyNotBefore(claims, now, v.requireNbf); if (err != default!) {
+        err = v.verifyNotBefore(claims, now, v.requireNbf); if (err != nil) {
             errs = append(errs, err);
         }
     }
 
     if (v.verifyIat) {
         {
-            err = v.verifyIssuedAt(claims, now, false); if (err != default!) {
+            err = v.verifyIssuedAt(claims, now, false); if (err != nil) {
                 errs = append(errs, err);
             }
         }
@@ -64,7 +64,7 @@ public static error Validate(this ref Validator v, Claims claims) {
 
     if (len(v.expectedAud) > 0) {
         {
-            err = v.verifyAudience(claims, v.expectedAud, v.expectAllAud); if (err != default!) {
+            err = v.verifyAudience(claims, v.expectedAud, v.expectAllAud); if (err != nil) {
                 errs = append(errs, err);
             }
         }
@@ -72,7 +72,7 @@ public static error Validate(this ref Validator v, Claims claims) {
 
     if (v.expectedIss != ""u8) {
         {
-            err = v.verifyIssuer(claims, v.expectedIss, true); if (err != default!) {
+            err = v.verifyIssuer(claims, v.expectedIss, true); if (err != nil) {
                 errs = append(errs, err);
             }
         }
@@ -80,7 +80,7 @@ public static error Validate(this ref Validator v, Claims claims) {
 
     if (v.expectedSub != ""u8) {
         {
-            err = v.verifySubject(claims, v.expectedSub, true); if (err != default!) {
+            err = v.verifySubject(claims, v.expectedSub, true); if (err != nil) {
                 errs = append(errs, err);
             }
         }
@@ -89,14 +89,14 @@ public static error Validate(this ref Validator v, Claims claims) {
     var (cvt, ok) = claims._<ClaimsValidator>(ᐧ);
     if (ok) {
         {
-            var errΔ1 = cvt.Validate(); if (errΔ1 != default!) {
+            var errΔ1 = cvt.Validate(); if (errΔ1 != nil) {
                 errs = append(errs, errΔ1);
             }
         }
     }
 
     if (len(errs) == 0) {
-        return default!;
+        return default;
     }
 
     return joinErrors(errs.ꓸꓸꓸ);
@@ -104,7 +104,7 @@ public static error Validate(this ref Validator v, Claims claims) {
 
 internal static error verifyExpiresAt(this ref Validator v, Claims claims, time.Time cmp, bool @required) {
     var (exp, err) = claims.GetExpirationTime();
-    if (err != default!) {
+    if (err != nil) {
         return err;
     }
 
@@ -112,12 +112,12 @@ internal static error verifyExpiresAt(this ref Validator v, Claims claims, time.
         return errorIfRequired(@required, "exp");
     }
 
-    return errorIfFalse(cmp.Before(((~exp).Time).Add(+v.leeway)), ErrTokenExpired);
+    return errorIfFalse(cmp.Before((exp.Time).Add(+v.leeway)), ErrTokenExpired);
 }
 
 internal static error verifyIssuedAt(this ref Validator v, Claims claims, time.Time cmp, bool @required) {
     var (iat, err) = claims.GetIssuedAt();
-    if (err != default!) {
+    if (err != nil) {
         return err;
     }
 
@@ -130,7 +130,7 @@ internal static error verifyIssuedAt(this ref Validator v, Claims claims, time.T
 
 internal static error verifyNotBefore(this ref Validator v, Claims claims, time.Time cmp, bool @required) {
     var (nbf, err) = claims.GetNotBefore();
-    if (err != default!) {
+    if (err != nil) {
         return err;
     }
 
@@ -143,7 +143,7 @@ internal static error verifyNotBefore(this ref Validator v, Claims claims, time.
 
 internal static error verifyAudience(this ref Validator v, Claims claims, slice<@string> cmp, bool expectAllAud) {
     var (aud, err) = claims.GetAudience();
-    if (err != default!) {
+    if (err != nil) {
         return err;
     }
 
@@ -155,7 +155,7 @@ internal static error verifyAudience(this ref Validator v, Claims claims, slice<
     if (!expectAllAud) {
         foreach (var (_, a) in aud) {
             if (slices.Contains(cmp, a)) {
-                return default!;
+                return default;
             }
         }
 
@@ -168,12 +168,12 @@ internal static error verifyAudience(this ref Validator v, Claims claims, slice<
         }
     }
 
-    return default!;
+    return default;
 }
 
 internal static error verifyIssuer(this ref Validator v, Claims claims, @string cmp, bool @required) {
     var (iss, err) = claims.GetIssuer();
-    if (err != default!) {
+    if (err != nil) {
         return err;
     }
 
@@ -186,7 +186,7 @@ internal static error verifyIssuer(this ref Validator v, Claims claims, @string 
 
 internal static error verifySubject(this ref Validator v, Claims claims, @string cmp, bool @required) {
     var (sub, err) = claims.GetSubject();
-    if (err != default!) {
+    if (err != nil) {
         return err;
     }
 
@@ -198,18 +198,18 @@ internal static error verifySubject(this ref Validator v, Claims claims, @string
 }
 
 internal static error errorIfFalse(bool value, error err) {
-    if (value){
-        return default!;
+    if (value) {
+        return default;
     } else {
         return err;
     }
 }
 
 internal static error errorIfRequired(bool @required, @string claim) {
-    if (@required){
+    if (@required) {
         return newError(fmt.Sprintf("%s claim is required"u8, claim), ErrTokenRequiredClaimMissing);
     } else {
-        return default!;
+        return default;
     }
 }
 

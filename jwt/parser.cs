@@ -25,7 +25,7 @@ public static ж<Parser> NewParser(params Span<Action<ж<Parser>>> optionsʗp) {
     var options = optionsʗp.sslice();
 
     var p = Ꮡ(new Parser(
-        validator: Ꮡ(new Validator(nil))
+        validator: Ꮡ(new Validator())
     ));
 
     foreach (var (_, option) in options) {
@@ -41,13 +41,13 @@ public static (ж<Token>, error) Parse(this ref Parser p, @string tokenString, F
 
 public static (ж<Token>, error) ParseWithClaims(this ref Parser p, @string tokenString, Claims claims, Func<ж<Token>, (any, error)> keyFunc) {
     var (token, parts, err) = p.ParseUnverified(tokenString, claims);
-    if (err != default!) {
+    if (err != nil) {
         return (token, err);
     }
 
-    if (p.validMethods != default!) {
+    if (p.validMethods != nil) {
         bool signingMethodValid = false;
-        @string alg = (~token).Method.Alg();
+        @string alg = token.Method.Alg();
         foreach (var (_, m) in p.validMethods) {
             if (m == alg) {
                 signingMethodValid = true;
@@ -59,12 +59,12 @@ public static (ж<Token>, error) ParseWithClaims(this ref Parser p, @string toke
         }
     }
 
-    if (keyFunc == default!) {
+    if (keyFunc == nil) {
         return (token, newError("no keyfunc was provided", ErrTokenUnverifiable));
     }
 
     (var got, err) = keyFunc(token);
-    if (err != default!) {
+    if (err != nil) {
         return (token, newError("error while executing keyfunc", ErrTokenUnverifiable, err));
     }
 
@@ -77,7 +77,7 @@ public static (ж<Token>, error) ParseWithClaims(this ref Parser p, @string toke
 
         foreach (var (_, key) in have.Keys) {
             {
-                err = (~token).Method.Verify(text, (~token).Signature, key); if (err == default!) {
+                err = token.Method.Verify(text, token.Signature, key); if (err == nil) {
                     break;
                 }
             }
@@ -86,10 +86,10 @@ public static (ж<Token>, error) ParseWithClaims(this ref Parser p, @string toke
     }
     default: {
         var have = got;
-        err = (~token).Method.Verify(text, (~token).Signature, have);
+        err = token.Method.Verify(text, token.Signature, have);
         break;
     }}
-    if (err != default!) {
+    if (err != nil) {
         return (token, newError("", ErrTokenSignatureInvalid, err));
     }
 
@@ -99,54 +99,54 @@ public static (ж<Token>, error) ParseWithClaims(this ref Parser p, @string toke
         }
 
         {
-            var errΔ1 = p.validator.Validate(claims); if (errΔ1 != default!) {
+            var errΔ1 = p.validator.Validate(claims); if (errΔ1 != nil) {
                 return (token, newError("", ErrTokenInvalidClaims, errΔ1));
             }
         }
     }
 
-    token.Value.Valid = true;
+    token.Valid = true;
 
-    return (token, default!);
+    return (token, default);
 }
 
 public static (ж<Token> token, slice<@string> parts, error err) ParseUnverified(this ref Parser p, @string tokenString, Claims claimsʗp) {
-    ж<Token> token = default!;
-    slice<@string> parts = default!;
-    error err = default!;
+    ж<Token> token = default;
+    slice<@string> parts = default;
+    error err = default;
     ref var claims = ref heap(claimsʗp, out var Ꮡclaims);
 
-    bool ok = default!;
+    bool ok = default;
     (parts, ok) = splitToken(tokenString);
     if (!ok) {
-        return (default!, default!, newError("token contains an invalid number of segments", ErrTokenMalformed));
+        return (default, default, newError("token contains an invalid number of segments", ErrTokenMalformed));
     }
 
     token = Ꮡ(new Token(Raw: tokenString));
 
-    slice<byte> headerBytes = default!;
+    slice<byte> headerBytes = default;
     {
-        (headerBytes, err) = p.DecodeSegment(parts[0]); if (err != default!) {
+        (headerBytes, err) = p.DecodeSegment(parts[0]); if (err != nil) {
             return (token, parts, newError("could not base64 decode header", ErrTokenMalformed, err));
         }
     }
     {
-        err = json.Unmarshal(headerBytes, token.of(Token.ᏑHeader)); if (err != default!) {
+        err = json.Unmarshal(headerBytes, token.ᏑHeader); if (err != nil) {
             return (token, parts, newError("could not JSON decode header", ErrTokenMalformed, err));
         }
     }
 
-    token.Value.Claims = claims;
+    token.Claims = claims;
 
     (var claimBytes, err) = p.DecodeSegment(parts[1]);
-    if (err != default!) {
+    if (err != nil) {
         return (token, parts, newError("could not base64 decode claim", ErrTokenMalformed, err));
     }
 
-    if (!p.useJSONNumber){
+    if (!p.useJSONNumber) {
         {
             ref var c = ref heap<MapClaims>(out var Ꮡc);
-            (c, var okΔ1) = (~token).Claims._<MapClaims>(ᐧ); if (okΔ1){
+            (c, var okΔ1) = token.Claims._<MapClaims>(ᐧ); if (okΔ1) {
                 err = json.Unmarshal(claimBytes, Ꮡc);
             } else {
                 err = json.Unmarshal(claimBytes, Ꮡclaims);
@@ -157,21 +157,21 @@ public static (ж<Token> token, slice<@string> parts, error err) ParseUnverified
         dec.UseNumber();
         {
             ref var c = ref heap<MapClaims>(out var Ꮡc);
-            (c, var okΔ2) = (~token).Claims._<MapClaims>(ᐧ); if (okΔ2){
+            (c, var okΔ2) = token.Claims._<MapClaims>(ᐧ); if (okΔ2) {
                 err = dec.Decode(Ꮡc);
             } else {
                 err = dec.Decode(Ꮡclaims);
             }
         }
     }
-    if (err != default!) {
+    if (err != nil) {
         return (token, parts, newError("could not JSON decode claim", ErrTokenMalformed, err));
     }
 
     {
-        var (method, okΔ3) = (~token).Header["alg"]._<@string>(ᐧ); if (okΔ3){
+        var (method, okΔ3) = token.Header["alg"]._<@string>(ᐧ); if (okΔ3) {
             {
-                token.Value.Method = GetSigningMethod(method); if ((~token).Method == default!) {
+                token.Method = GetSigningMethod(method); if (token.Method == nil) {
                     return (token, parts, newError("signing method (alg) is unavailable", ErrTokenUnverifiable));
                 }
             }
@@ -180,29 +180,29 @@ public static (ж<Token> token, slice<@string> parts, error err) ParseUnverified
         }
     }
 
-    (token.Value.Signature, err) = p.DecodeSegment(parts[2]);
-    if (err != default!) {
+    (token.Signature, err) = p.DecodeSegment(parts[2]);
+    if (err != nil) {
         return (token, parts, newError("could not base64 decode signature", ErrTokenMalformed, err));
     }
 
-    return (token, parts, default!);
+    return (token, parts, default);
 }
 
 internal static (slice<@string>, bool) splitToken(@string token) {
     var parts = new slice<@string>(3);
     var (header, remain, ok) = strings.Cut(token, tokenDelimiter);
     if (!ok) {
-        return (default!, false);
+        return (default, false);
     }
     parts[0] = header;
     (var claims, remain, ok) = strings.Cut(remain, tokenDelimiter);
     if (!ok) {
-        return (default!, false);
+        return (default, false);
     }
     parts[1] = claims;
     var (signature, _, unexpected) = strings.Cut(remain, tokenDelimiter);
     if (unexpected) {
-        return (default!, false);
+        return (default, false);
     }
     parts[2] = signature;
 

@@ -17,7 +17,7 @@ partial struct SigningMethodEd25519 {
 public static ж<SigningMethodEd25519> SigningMethodEdDSA;
 
 [GoInit] internal static void initΔ1() {
-    SigningMethodEdDSA = Ꮡ(new SigningMethodEd25519(nil));
+    SigningMethodEdDSA = Ꮡ(new SigningMethodEd25519());
     RegisterSigningMethod(SigningMethodEdDSA.Alg(), () => new SigningMethodEd25519жSigningMethod(SigningMethodEdDSA));
 }
 
@@ -26,8 +26,8 @@ public static @string Alg(this ref SigningMethodEd25519 m) {
 }
 
 public static error Verify(this ref SigningMethodEd25519 m, @string signingString, slice<byte> sig, any key) {
-    ed25519.PublicKey ed25519Key = default!;
-    bool ok = default!;
+    ed25519.PublicKey ed25519Key = default;
+    bool ok = default;
 
     {
         (ed25519Key, ok) = key._<ed25519.PublicKey>(ᐧ); if (!ok) {
@@ -43,31 +43,31 @@ public static error Verify(this ref SigningMethodEd25519 m, @string signingStrin
         return ErrEd25519Verification;
     }
 
-    return default!;
+    return default;
 }
 
 public static (slice<byte>, error) Sign(this ref SigningMethodEd25519 m, @string signingString, any key) {
-    crypto.Signer ed25519Key = default!;
-    bool ok = default!;
+    crypto.Signer ed25519Key = default;
+    bool ok = default;
 
     {
         (ed25519Key, ok) = key._<crypto.Signer>(ᐧ); if (!ok) {
-            return (default!, newError("Ed25519 sign expects crypto.Signer", ErrInvalidKeyType));
+            return (default, newError("Ed25519 sign expects crypto.Signer", ErrInvalidKeyType));
         }
     }
 
     {
         var (_, okΔ1) = ed25519Key.Public()._<ed25519.PublicKey>(ᐧ); if (!okΔ1) {
-            return (default!, ErrInvalidKey);
+            return (default, ErrInvalidKey);
         }
     }
 
     var (sig, err) = ed25519Key.Sign(rand.Reader, slice<byte>(signingString), (crypto.Hash)0);
-    if (err != default!) {
-        return (default!, err);
+    if (err != nil) {
+        return (default, err);
     }
 
-    return (sig, default!);
+    return (sig, default);
 }
 
 } // end jwt_package

@@ -7,9 +7,9 @@ partial class request_package {
 
 internal static (@string, error) stripBearerPrefixFromTokenString(@string tok) {
     if (len(tok) > 6 && strings.EqualFold(tok[..7], "bearer ")) {
-        return (tok[7..], default!);
+        return (tok[7..], default);
     }
-    return (tok, default!);
+    return (tok, default);
 }
 
 public static ж<PostExtractionFilter> AuthorizationHeaderExtractor = Ꮡ(new PostExtractionFilter(

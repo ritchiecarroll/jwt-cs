@@ -10,15 +10,6 @@
 // importing type aliases at a namespace level.
 
 // <ImportedTypeAliases>
-global using flagꓸErrorHandling = go.flag_package.ΔErrorHandling;
-global using jsonꓸToken = object;
-global using jsonꓸΔToken = object;
-global using jwtꓸVerificationKey = object;
-global using osꓸDirEntry = go.io.fs_package.DirEntry;
-global using osꓸFileInfo = go.io.fs_package.FileInfo;
-global using osꓸFileMode = go.io.fs_package.FileMode;
-global using osꓸPathError = go.io.fs_package.PathError;
-global using osꓸSignal = go.os_package.ΔSignal;
 // </ImportedTypeAliases>
 
 using go;
@@ -52,6 +43,10 @@ using static go.main_package;
 // <ImplicitConversions>
 // </ImplicitConversions>
 
+// The struct types whose fields this package reaches through a pointer, as Go spells it, `p.f`:
+// go2cs-gen emits a field property on the pointer for each of their fields.
+[assembly: GoFieldAccess(typeof(go.github.com.golang_jwt.jwt.jwt_package.Token))]
+
 // Go source positions are recorded here, one `GoPositionMap` attribute per converted
 // source file in this compilation, so that `runtime.Caller` and the tracebacks built on it
 // can name the GO file and line a frame was converted from rather than the emitted C# one.
@@ -60,7 +55,7 @@ using static go.main_package;
 // or has none - golib, the BCL and hand-written conversions - and reports its own C# position.
 
 // <GoSourcePositionMaps>
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/cmd/jwt/main.go", "main.cs", "ABQ0goKCgoKGgoKWhIKWgoKCqJiAgoLKgpSkpKSCysKCpoKUpKSCgpSCkrbogoKUgpSmgqaqhIKCqIKCqIKClIKClJS0tKTKgqiCgqiAgraqhIKCkoKogoCCuIKCuoKClIKCuoKCqJaCgriUgoKUgoLGgoKUgoLGgoKUgoLIgoKUlKiEgoKogoKmgoKogoCCtoKAgramgqaCpoKmgqaCgpSCgoKCgpSmlMqCgqaCgoKUgg==", "45-49:1;95-97:1;136-154:1")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/cmd/jwt/main.go", "main.cs", "ABQ0goKCgoKGgoKWhIKWgoKCqJiAgoLKgpSkpKSCysKCpoKktKSCgpSCksbogoKUgpSmgqaqhIKCqIKCqIKClIKClJS0tKTKgqiCgqiAgraqhIKCgoKogoCCuIKCuoKClIKCuoKCqJaCgriUgoKUgoLGgoKUgoLGgoKUgoLIgoKUlKiEgoKogoKmgoKogoCCtoKAgramgqaCpoKmgqaCgpSCgoKCgpSmlMqCgqaCgoKUgg==", "45-49:1;95-97:1;136-154:1")]
 // </GoSourcePositionMaps>
 
 namespace go;

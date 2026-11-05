@@ -31,7 +31,7 @@ partial struct joinedError {
 internal static @string Error(this joinedError je) {
     var msgᴷ = new stackAppend<@string>();
 
-    var msg = new @string[]{}.slice();
+    var msg = slice<@string>([]);
     foreach (var (_, err) in je.errs) {
         msg = append(msgᴷ, msg, err.Error());
     }
@@ -55,14 +55,14 @@ internal static error newError(@string message, error err, params ꓸꓸꓸerror
     var more = moreʗp.sslice();
     var argsᴷ = new stackAppend<any>();
 
-    @string format = default!;
-    slice<any> args = default!;
-    if (message != ""u8){
+    @string format = default;
+    slice<any> args = default;
+    if (message != ""u8) {
         format = "%w: %s";
-        args = new any[]{err, message}.slice();
+        args = slice<any>([err, message]);
     } else {
         format = "%w";
-        args = new any[]{err}.slice();
+        args = slice<any>([err]);
     }
 
     foreach (var (_, e) in more) {

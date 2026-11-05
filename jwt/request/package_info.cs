@@ -10,10 +10,6 @@
 // importing type aliases at a namespace level.
 
 // <ImportedTypeAliases>
-global using httpꓸCookie = go.net.http_package.ΔCookie;
-global using httpꓸHandler = go.net.http_package.ΔHandler;
-global using httpꓸHeader = go.net.http_package.ΔHeader;
-global using jwtꓸVerificationKey = object;
 // </ImportedTypeAliases>
 
 using go;
@@ -54,6 +50,10 @@ using static go.github.com.golang_jwt.jwt.v5.request_package;
 // <ImplicitConversions>
 // </ImplicitConversions>
 
+// The struct types whose fields this package reaches through a pointer, as Go spells it, `p.f`:
+// go2cs-gen emits a field property on the pointer for each of their fields.
+[assembly: GoFieldAccess(typeof(fromRequestParser))]
+
 // Go source positions are recorded here, one `GoPositionMap` attribute per converted
 // source file in this compilation, so that `runtime.Caller` and the tracebacks built on it
 // can name the GO file and line a frame was converted from rather than the emitted C# one.
@@ -62,9 +62,9 @@ using static go.github.com.golang_jwt.jwt.v5.request_package;
 // or has none - golib, the BCL and hand-written conversions - and reports its own C# position.
 
 // <GoSourcePositionMaps>
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/extractor.go", "extractor.cs", "AAkWAAccpIKAgrYABBCkloKAgsjMhIKAgpKCtgAHFIKAgpQABxKihoKU")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/oauth2.go", "oauth2.cs", "AAcQhIKUqs4=")]
-[assembly: go.GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/request.go", "request.cs", "AAketJaCqIKUgqiCgqisggALGoKCuqKC", "60-62:1;67-69:1")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/extractor.go", "extractor.cs", "AAkWAAccpIKAgrYABBCkloKAgsjMhIKAgoKCtgAHFIKAgpQABxKihoKU")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/oauth2.go", "oauth2.cs", "AAcQhIKUqs4=")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/request.go", "request.cs", "AAketJaCqIKUgqiCgqisggALGoKCuqKC", "60-62:1;67-69:1")]
 // </GoSourcePositionMaps>
 
 namespace go.github.com.golang_jwt.jwt.v5;

@@ -48,11 +48,11 @@ public static error Verify(this ж<SigningMethodHMAC> Ꮡm, @string signingStrin
     var recvʗ1 = m.Hash;
     var hasher = hmac.New(() => recvʗ1.New(), keyBytes);
     hasher.Write(slice<byte>(signingString));
-    if (!hmac.Equal(sig, hasher.Sum(default!))) {
+    if (!hmac.Equal(sig, hasher.Sum(default))) {
         return ErrSignatureInvalid;
     }
 
-    return default!;
+    return default;
 }
 
 public static (slice<byte>, error) Sign(this ж<SigningMethodHMAC> Ꮡm, @string signingString, any key) {
@@ -61,18 +61,18 @@ public static (slice<byte>, error) Sign(this ж<SigningMethodHMAC> Ꮡm, @string
     {
         var (keyBytes, ok) = key._<slice<byte>>(ᐧ); if (ok) {
             if (!m.Hash.Available()) {
-                return (default!, ErrHashUnavailable);
+                return (default, ErrHashUnavailable);
             }
 
             var recvʗ1 = m.Hash;
             var hasher = hmac.New(() => recvʗ1.New(), keyBytes);
             hasher.Write(slice<byte>(signingString));
 
-            return (hasher.Sum(default!), default!);
+            return (hasher.Sum(default), default);
         }
     }
 
-    return (default!, newError("HMAC sign expects []byte", ErrInvalidKeyType));
+    return (default, newError("HMAC sign expects []byte", ErrInvalidKeyType));
 }
 
 } // end jwt_package
