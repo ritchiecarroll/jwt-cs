@@ -32,7 +32,7 @@ internal static @string Error(this joinedError je) {
     var msgᴷ = new stackAppend<@string>();
 
     var msg = slice<@string>([]);
-    foreach (var (_, err) in je.errs) {
+    foreach (var (_, err) in range(je.errs)) {
         msg = append(msgᴷ, msg, err.Error());
     }
 
@@ -59,13 +59,13 @@ internal static error newError(@string message, error err, params ꓸꓸꓸerror
     slice<any> args = default;
     if (message != ""u8) {
         format = "%w: %s";
-        args = slice<any>([err, message]);
+        args = [err, message];
     } else {
         format = "%w";
-        args = slice<any>([err]);
+        args = [err];
     }
 
-    foreach (var (_, e) in more) {
+    foreach (var (_, e) in range(more)) {
         format += ": %w"u8;
         args = append(argsᴷ, args, (any)(e));
     }

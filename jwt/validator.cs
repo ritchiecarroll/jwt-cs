@@ -42,56 +42,42 @@ public static error Validate(this ref Validator v, Claims claims) {
         now = time.Now();
     }
 
-    {
-        err = v.verifyExpiresAt(claims, now, v.requireExp); if (err != nil) {
-            errs = append(errs, err);
-        }
+    err = v.verifyExpiresAt(claims, now, v.requireExp); if (err != nil) {
+        errs = append(errs, err);
     }
 
-    {
-        err = v.verifyNotBefore(claims, now, v.requireNbf); if (err != nil) {
-            errs = append(errs, err);
-        }
+    err = v.verifyNotBefore(claims, now, v.requireNbf); if (err != nil) {
+        errs = append(errs, err);
     }
 
     if (v.verifyIat) {
-        {
-            err = v.verifyIssuedAt(claims, now, false); if (err != nil) {
-                errs = append(errs, err);
-            }
+        err = v.verifyIssuedAt(claims, now, false); if (err != nil) {
+            errs = append(errs, err);
         }
     }
 
     if (len(v.expectedAud) > 0) {
-        {
-            err = v.verifyAudience(claims, v.expectedAud, v.expectAllAud); if (err != nil) {
-                errs = append(errs, err);
-            }
+        err = v.verifyAudience(claims, v.expectedAud, v.expectAllAud); if (err != nil) {
+            errs = append(errs, err);
         }
     }
 
     if (v.expectedIss != ""u8) {
-        {
-            err = v.verifyIssuer(claims, v.expectedIss, true); if (err != nil) {
-                errs = append(errs, err);
-            }
+        err = v.verifyIssuer(claims, v.expectedIss, true); if (err != nil) {
+            errs = append(errs, err);
         }
     }
 
     if (v.expectedSub != ""u8) {
-        {
-            err = v.verifySubject(claims, v.expectedSub, true); if (err != nil) {
-                errs = append(errs, err);
-            }
+        err = v.verifySubject(claims, v.expectedSub, true); if (err != nil) {
+            errs = append(errs, err);
         }
     }
 
     var (cvt, ok) = claims._<ClaimsValidator>(ᐧ);
     if (ok) {
-        {
-            var errΔ1 = cvt.Validate(); if (errΔ1 != nil) {
-                errs = append(errs, errΔ1);
-            }
+        var errΔ1 = cvt.Validate(); if (errΔ1 != nil) {
+            errs = append(errs, errΔ1);
         }
     }
 
@@ -153,7 +139,7 @@ internal static error verifyAudience(this ref Validator v, Claims claims, slice<
     }
 
     if (!expectAllAud) {
-        foreach (var (_, a) in aud) {
+        foreach (var (_, a) in range<@string>(aud)) {
             if (slices.Contains(cmp, a)) {
                 return default;
             }
@@ -162,7 +148,7 @@ internal static error verifyAudience(this ref Validator v, Claims claims, slice<
         return ErrTokenInvalidAudience;
     }
 
-    foreach (var (_, a) in cmp) {
+    foreach (var (_, a) in range(cmp)) {
         if (!slices.Contains(aud, a)) {
             return ErrTokenInvalidAudience;
         }

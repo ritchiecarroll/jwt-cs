@@ -17,29 +17,21 @@ public static (ж<rsa.PrivateKey>, error) ParseRSAPrivateKeyFromPEM(slice<byte> 
     error err = default;
 
     ж<pem.Block> block = default;
-    {
-        (block, _) = pem.Decode(key); if (block == nil) {
-            return (default, ErrKeyMustBePEMEncoded);
-        }
+    (block, _) = pem.Decode(key); if (block == nil) {
+        return (default, ErrKeyMustBePEMEncoded);
     }
 
     any parsedKey = default;
-    {
-        (parsedKey, err) = x509.ParsePKCS1PrivateKey(block.Bytes); if (err != nil) {
-            {
-                (parsedKey, err) = x509.ParsePKCS8PrivateKey(block.Bytes); if (err != nil) {
-                    return (default, err);
-                }
-            }
+    (parsedKey, err) = x509.ParsePKCS1PrivateKey(block.Bytes); if (err != nil) {
+        (parsedKey, err) = x509.ParsePKCS8PrivateKey(block.Bytes); if (err != nil) {
+            return (default, err);
         }
     }
 
     ж<rsa.PrivateKey> pkey = default;
     bool ok = default;
-    {
-        (pkey, ok) = parsedKey._<ж<rsa.PrivateKey>>(ᐧ); if (!ok) {
-            return (default, ErrNotRSAPrivateKey);
-        }
+    (pkey, ok) = parsedKey._<ж<rsa.PrivateKey>>(ᐧ); if (!ok) {
+        return (default, ErrNotRSAPrivateKey);
     }
 
     return (pkey, default);
@@ -49,37 +41,27 @@ public static (ж<rsa.PrivateKey>, error) ParseRSAPrivateKeyFromPEMWithPassword(
     error err = default;
 
     ж<pem.Block> block = default;
-    {
-        (block, _) = pem.Decode(key); if (block == nil) {
-            return (default, ErrKeyMustBePEMEncoded);
-        }
+    (block, _) = pem.Decode(key); if (block == nil) {
+        return (default, ErrKeyMustBePEMEncoded);
     }
 
     any parsedKey = default;
 
     slice<byte> blockDecrypted = default;
-    {
-        (blockDecrypted, err) = x509.DecryptPEMBlock(block, slice<byte>(password)); if (err != nil) {
-            return (default, err);
-        }
+    (blockDecrypted, err) = x509.DecryptPEMBlock(block, slice<byte>(password)); if (err != nil) {
+        return (default, err);
     }
 
-    {
-        (parsedKey, err) = x509.ParsePKCS1PrivateKey(blockDecrypted); if (err != nil) {
-            {
-                (parsedKey, err) = x509.ParsePKCS8PrivateKey(blockDecrypted); if (err != nil) {
-                    return (default, err);
-                }
-            }
+    (parsedKey, err) = x509.ParsePKCS1PrivateKey(blockDecrypted); if (err != nil) {
+        (parsedKey, err) = x509.ParsePKCS8PrivateKey(blockDecrypted); if (err != nil) {
+            return (default, err);
         }
     }
 
     ж<rsa.PrivateKey> pkey = default;
     bool ok = default;
-    {
-        (pkey, ok) = parsedKey._<ж<rsa.PrivateKey>>(ᐧ); if (!ok) {
-            return (default, ErrNotRSAPrivateKey);
-        }
+    (pkey, ok) = parsedKey._<ж<rsa.PrivateKey>>(ᐧ); if (!ok) {
+        return (default, ErrNotRSAPrivateKey);
     }
 
     return (pkey, default);
@@ -89,35 +71,25 @@ public static (ж<rsa.PublicKey>, error) ParseRSAPublicKeyFromPEM(slice<byte> ke
     error err = default;
 
     ж<pem.Block> block = default;
-    {
-        (block, _) = pem.Decode(key); if (block == nil) {
-            return (default, ErrKeyMustBePEMEncoded);
-        }
+    (block, _) = pem.Decode(key); if (block == nil) {
+        return (default, ErrKeyMustBePEMEncoded);
     }
 
     any parsedKey = default;
-    {
-        (parsedKey, err) = x509.ParsePKIXPublicKey(block.Bytes); if (err != nil) {
-            {
-                var (cert, errΔ1) = x509.ParseCertificate(block.Bytes); if (errΔ1 == nil) {
-                    parsedKey = cert.PublicKey;
-                } else {
-                    {
-                        (parsedKey, errΔ1) = x509.ParsePKCS1PublicKey(block.Bytes); if (errΔ1 != nil) {
-                            return (default, errΔ1);
-                        }
-                    }
-                }
+    (parsedKey, err) = x509.ParsePKIXPublicKey(block.Bytes); if (err != nil) {
+        var (cert, errΔ1) = x509.ParseCertificate(block.Bytes); if (errΔ1 == nil) {
+            parsedKey = cert.PublicKey;
+        } else {
+            (parsedKey, errΔ1) = x509.ParsePKCS1PublicKey(block.Bytes); if (errΔ1 != nil) {
+                return (default, errΔ1);
             }
         }
     }
 
     ж<rsa.PublicKey> pkey = default;
     bool ok = default;
-    {
-        (pkey, ok) = parsedKey._<ж<rsa.PublicKey>>(ᐧ); if (!ok) {
-            return (default, ErrNotRSAPublicKey);
-        }
+    (pkey, ok) = parsedKey._<ж<rsa.PublicKey>>(ᐧ); if (!ok) {
+        return (default, ErrNotRSAPublicKey);
     }
 
     return (pkey, default);

@@ -40,11 +40,9 @@ internal static void Main() {
 
     flag.Parse();
 
-    {
-        var err = start(); if (err != nil) {
-            fmt.Fprintf(new os.FileжWriter(os.Stderr), "Error: %v\n"u8, err);
-            os.Exit(1);
-        }
+    var err = start(); if (err != nil) {
+        fmt.Fprintf(new os.FileжWriter(os.Stderr), "Error: %v\n"u8, err);
+        os.Exit(1);
     }
 }
 
@@ -128,7 +126,7 @@ internal static error verifyToken() {
         return fmt.Errorf("couldn't read token: %w"u8, err);
     }
 
-    tokData = Δregexp.MustCompile(@"\s*$").ReplaceAll(tokData, slice<byte>([]));
+    tokData = Δregexp.MustCompile(@"\s*$").ReplaceAll(tokData, []);
     if (flagDebug.Value) {
         fmt.Fprintf(new os.FileжWriter(os.Stderr), "Token len: %v bytes\n"u8, len(tokData));
     }
@@ -168,10 +166,8 @@ internal static error verifyToken() {
         fmt.Fprintf(new os.FileжWriter(os.Stderr), "Claims:\n%v\n"u8, token.Claims);
     }
 
-    {
-        var errΔ2 = printJSON(token.Claims); if (errΔ2 != nil) {
-            return fmt.Errorf("failed to output claims: %w"u8, errΔ2);
-        }
+    var errΔ2 = printJSON(token.Claims); if (errΔ2 != nil) {
+        return fmt.Errorf("failed to output claims: %w"u8, errΔ2);
     }
 
     return default;
@@ -186,10 +182,8 @@ internal static error signToken() {
     }
 
     ref var claims = ref heap<jwt.MapClaims>(out var Ꮡclaims);
-    {
-        var errΔ1 = json.Unmarshal(tokData, Ꮡclaims); if (errΔ1 != nil) {
-            return fmt.Errorf("couldn't parse claims JSON: %w"u8, errΔ1);
-        }
+    var errΔ1 = json.Unmarshal(tokData, Ꮡclaims); if (errΔ1 != nil) {
+        return fmt.Errorf("couldn't parse claims JSON: %w"u8, errΔ1);
     }
 
     if (len(flagClaims) > 0) {
@@ -271,7 +265,7 @@ internal static error showToken() {
         return fmt.Errorf("couldn't read token: %w"u8, err);
     }
 
-    tokData = Δregexp.MustCompile(@"\s*$").ReplaceAll(tokData, slice<byte>([]));
+    tokData = Δregexp.MustCompile(@"\s*$").ReplaceAll(tokData, []);
     if (flagDebug.Value) {
         fmt.Fprintf(new os.FileжWriter(os.Stderr), "Token len: %v bytes\n"u8, len(tokData));
     }
@@ -282,17 +276,13 @@ internal static error showToken() {
     }
 
     fmt.Println("Header:");
-    {
-        var errΔ1 = printJSON(token.Header); if (errΔ1 != nil) {
-            return fmt.Errorf("failed to output header: %w"u8, errΔ1);
-        }
+    var errΔ1 = printJSON(token.Header); if (errΔ1 != nil) {
+        return fmt.Errorf("failed to output header: %w"u8, errΔ1);
     }
 
     fmt.Println("Claims:");
-    {
-        var errΔ2 = printJSON(token.Claims); if (errΔ2 != nil) {
-            return fmt.Errorf("failed to output claims: %w"u8, errΔ2);
-        }
+    var errΔ2 = printJSON(token.Claims); if (errΔ2 != nil) {
+        return fmt.Errorf("failed to output claims: %w"u8, errΔ2);
     }
 
     return default;
@@ -320,7 +310,7 @@ internal static @string algHelp() {
 
     ref var b = ref heap(new strings.Builder(), out var Ꮡb);
     Ꮡb.WriteString("signing algorithm identifier, one of\n");
-    foreach (var (i, alg) in algs) {
+    foreach (var (i, alg) in range(algs)) {
         if (i > 0) {
             if (i % 7 == 0) {
                 Ꮡb.WriteString(",\n");

@@ -62,7 +62,7 @@ using static go.github.com.golang_jwt.jwt.v5.request_package;
 // or has none - golib, the BCL and hand-written conversions - and reports its own C# position.
 
 // <GoSourcePositionMaps>
-[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/extractor.go", "extractor.cs", "AAkWAAccpIKAgrYABBCkloKAgsjMhIKAgoKCtgAHFIKAgpQABxKihoKU")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/extractor.go", "extractor.cs", "AAkWAAccpIKCpgAEEKSWgoK4zISCgoKCpgAHFIKClAAGEqKGgpQ=")]
 [assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/oauth2.go", "oauth2.cs", "AAcQhIKUqs4=")]
 [assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/request.go", "request.cs", "AAketJaCqIKUgqiCgqisggALGoKCuqKC", "60-62:1;67-69:1")]
 // </GoSourcePositionMaps>

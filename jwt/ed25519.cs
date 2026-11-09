@@ -29,10 +29,8 @@ public static error Verify(this ref SigningMethodEd25519 m, @string signingStrin
     ed25519.PublicKey ed25519Key = default;
     bool ok = default;
 
-    {
-        (ed25519Key, ok) = key._<ed25519.PublicKey>(ᐧ); if (!ok) {
-            return newError("Ed25519 verify expects ed25519.PublicKey", ErrInvalidKeyType);
-        }
+    (ed25519Key, ok) = key._<ed25519.PublicKey>(ᐧ); if (!ok) {
+        return newError("Ed25519 verify expects ed25519.PublicKey", ErrInvalidKeyType);
     }
 
     if (len(ed25519Key) != ed25519.PublicKeySize) {
@@ -50,16 +48,12 @@ public static (slice<byte>, error) Sign(this ref SigningMethodEd25519 m, @string
     crypto.Signer ed25519Key = default;
     bool ok = default;
 
-    {
-        (ed25519Key, ok) = key._<crypto.Signer>(ᐧ); if (!ok) {
-            return (default, newError("Ed25519 sign expects crypto.Signer", ErrInvalidKeyType));
-        }
+    (ed25519Key, ok) = key._<crypto.Signer>(ᐧ); if (!ok) {
+        return (default, newError("Ed25519 sign expects crypto.Signer", ErrInvalidKeyType));
     }
 
-    {
-        var (_, okΔ1) = ed25519Key.Public()._<ed25519.PublicKey>(ᐧ); if (!okΔ1) {
-            return (default, ErrInvalidKey);
-        }
+    var (_, okΔ1) = ed25519Key.Public()._<ed25519.PublicKey>(ᐧ); if (!okΔ1) {
+        return (default, ErrInvalidKey);
     }
 
     var (sig, err) = ed25519Key.Sign(rand.Reader, slice<byte>(signingString), (crypto.Hash)0);

@@ -5,7 +5,6 @@ using sync = sync_package;
 partial class jwt_package {
 
 internal static map<@string, Func<SigningMethod>> signingMethods = new map<@string, Func<SigningMethod>>{};
-
 internal static ж<sync.RWMutex> signingMethodLock = @new<sync.RWMutex>();
 
 partial interface SigningMethod {
@@ -33,10 +32,8 @@ public static SigningMethod /*method*/ GetSigningMethod(@string alg) {
         signingMethodLock.RLock();
         defer(signingMethodLock.RUnlock, ref ᒐ);
 
-        {
-            var (methodF, ok) = signingMethods[alg, ꟷ]; if (ok) {
-                method = methodF();
-            }
+        var (methodF, ok) = signingMethods[alg, ꟷ]; if (ok) {
+            method = methodF();
         }
     }
     catch (Exception ᒐex) when (GoFrame.IsPanic(ᒐex, out PanicException? ᒐp)) { GoFrame.Capture(ᒐp); }

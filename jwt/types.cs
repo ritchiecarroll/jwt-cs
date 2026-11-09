@@ -49,16 +49,12 @@ public static error /*err*/ UnmarshalJSON(this ref NumericDate date, slice<byte>
     ref var number = ref heap(new json.Number(), out var Ꮡnumber);
     float64 f = default;
 
-    {
-        err = json.Unmarshal(b, Ꮡnumber); if (err != nil) {
-            return fmt.Errorf("could not parse NumericData: %w"u8, err);
-        }
+    err = json.Unmarshal(b, Ꮡnumber); if (err != nil) {
+        return fmt.Errorf("could not parse NumericData: %w"u8, err);
     }
 
-    {
-        (f, err) = number.Float64(); if (err != nil) {
-            return fmt.Errorf("could not convert json number value to float: %w"u8, err);
-        }
+    (f, err) = number.Float64(); if (err != nil) {
+        return fmt.Errorf("could not convert json number value to float: %w"u8, err);
     }
 
     var n = newNumericDateFromSeconds(f);
@@ -74,10 +70,8 @@ public static error /*err*/ UnmarshalJSON(this ref ClaimStrings s, slice<byte> d
 
     ref var value = ref heap<any>(out var Ꮡvalue);
 
-    {
-        err = json.Unmarshal(data, Ꮡvalue); if (err != nil) {
-            return err;
-        }
+    err = json.Unmarshal(data, Ꮡvalue); if (err != nil) {
+        return err;
     }
 
     slice<@string> aud = default;
@@ -92,7 +86,7 @@ public static error /*err*/ UnmarshalJSON(this ref ClaimStrings s, slice<byte> d
         break;
     }
     case slice<any> v: {
-        foreach (var (_, vv) in v) {
+        foreach (var (_, vv) in range(v)) {
             var (vs, ok) = vv._<@string>(ᐧ);
             if (!ok) {
                 return ErrInvalidType;

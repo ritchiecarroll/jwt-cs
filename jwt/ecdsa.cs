@@ -66,10 +66,8 @@ public static error Verify(this ref SigningMethodECDSA m, @string signingString,
     var hasher = m.Hash.New();
     hasher.Write(slice<byte>(signingString));
 
-    {
-        var verifystatus = ecdsa.Verify(ecdsaKey, hasher.Sum(default), r, s); if (verifystatus) {
-            return default;
-        }
+    var verifystatus = ecdsa.Verify(ecdsaKey, hasher.Sum(default), r, s); if (verifystatus) {
+        return default;
     }
 
     return ErrECDSAVerification;
@@ -94,27 +92,25 @@ public static (slice<byte>, error) Sign(this ref SigningMethodECDSA m, @string s
     var hasher = m.Hash.New();
     hasher.Write(slice<byte>(signingString));
 
-    {
-        var (r, s, err) = ecdsa.Sign(rand.Reader, ecdsaKey, hasher.Sum(default)); if (err == nil) {
-            nint curveBits = ecdsaKey.Curve.Params().BitSize;
+    var (r, s, err) = ecdsa.Sign(rand.Reader, ecdsaKey, hasher.Sum(default)); if (err == nil) {
+        nint curveBits = ecdsaKey.Curve.Params().BitSize;
 
-            if (m.CurveBits != curveBits) {
-                return (default, ErrInvalidKey);
-            }
-
-            nint keyBytes = curveBits / 8;
-            if (curveBits % 8 > 0) {
-                keyBytes += 1;
-            }
-
-            var @out = new slice<byte>(2 * keyBytes);
-            r.FillBytes(@out.slice(0, keyBytes));
-            s.FillBytes(@out.slice(keyBytes));
-
-            return (@out, default);
-        } else {
-            return (default, err);
+        if (m.CurveBits != curveBits) {
+            return (default, ErrInvalidKey);
         }
+
+        nint keyBytes = curveBits / 8;
+        if (curveBits % 8 > 0) {
+            keyBytes += 1;
+        }
+
+        var @out = new slice<byte>(2 * keyBytes);
+        r.FillBytes(@out.slice(0, keyBytes));
+        s.FillBytes(@out.slice(keyBytes));
+
+        return (@out, default);
+    } else {
+        return (default, err);
     }
 }
 

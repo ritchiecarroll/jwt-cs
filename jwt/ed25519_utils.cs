@@ -17,25 +17,19 @@ public static (cryptoꓸPrivateKey, error) ParseEdPrivateKeyFromPEM(slice<byte> 
     error err = default;
 
     ж<pem.Block> block = default;
-    {
-        (block, _) = pem.Decode(key); if (block == nil) {
-            return (default, ErrKeyMustBePEMEncoded);
-        }
+    (block, _) = pem.Decode(key); if (block == nil) {
+        return (default, ErrKeyMustBePEMEncoded);
     }
 
     any parsedKey = default;
-    {
-        (parsedKey, err) = x509.ParsePKCS8PrivateKey(block.Bytes); if (err != nil) {
-            return (default, err);
-        }
+    (parsedKey, err) = x509.ParsePKCS8PrivateKey(block.Bytes); if (err != nil) {
+        return (default, err);
     }
 
     ed25519.PrivateKey pkey = default;
     bool ok = default;
-    {
-        (pkey, ok) = parsedKey._<ed25519.PrivateKey>(ᐧ); if (!ok) {
-            return (default, ErrNotEdPrivateKey);
-        }
+    (pkey, ok) = parsedKey._<ed25519.PrivateKey>(ᐧ); if (!ok) {
+        return (default, ErrNotEdPrivateKey);
     }
 
     return (pkey, default);
@@ -45,25 +39,19 @@ public static (cryptoꓸPublicKey, error) ParseEdPublicKeyFromPEM(slice<byte> ke
     error err = default;
 
     ж<pem.Block> block = default;
-    {
-        (block, _) = pem.Decode(key); if (block == nil) {
-            return (default, ErrKeyMustBePEMEncoded);
-        }
+    (block, _) = pem.Decode(key); if (block == nil) {
+        return (default, ErrKeyMustBePEMEncoded);
     }
 
     any parsedKey = default;
-    {
-        (parsedKey, err) = x509.ParsePKIXPublicKey(block.Bytes); if (err != nil) {
-            return (default, err);
-        }
+    (parsedKey, err) = x509.ParsePKIXPublicKey(block.Bytes); if (err != nil) {
+        return (default, err);
     }
 
     ed25519.PublicKey pkey = default;
     bool ok = default;
-    {
-        (pkey, ok) = parsedKey._<ed25519.PublicKey>(ᐧ); if (!ok) {
-            return (default, ErrNotEdPublicKey);
-        }
+    (pkey, ok) = parsedKey._<ed25519.PublicKey>(ᐧ); if (!ok) {
+        return (default, ErrNotEdPublicKey);
     }
 
     return (pkey, default);

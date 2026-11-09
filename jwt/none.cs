@@ -10,7 +10,6 @@ public static error NoneSignatureTypeDisallowedError;
 
 public partial struct signingMethodNone {
 }
-
 public partial struct unsafeNoneMagicConstant /*@string*/;
 
 [GoInit] internal static void initΔ3() {
@@ -25,10 +24,8 @@ public static @string Alg(this ref signingMethodNone m) {
 }
 
 public static error /*err*/ Verify(this ref signingMethodNone m, @string signingString, slice<byte> sig, any key) {
-    {
-        var (_, ok) = key._<unsafeNoneMagicConstant>(ᐧ); if (!ok) {
-            return NoneSignatureTypeDisallowedError;
-        }
+    var (_, ok) = key._<unsafeNoneMagicConstant>(ᐧ); if (!ok) {
+        return NoneSignatureTypeDisallowedError;
     }
     if (len(sig) != 0) {
         return newError("'none' signing method with non-empty signature", ErrTokenUnverifiable);
@@ -38,10 +35,8 @@ public static error /*err*/ Verify(this ref signingMethodNone m, @string signing
 }
 
 public static (slice<byte>, error) Sign(this ref signingMethodNone m, @string signingString, any key) {
-    {
-        var (_, ok) = key._<unsafeNoneMagicConstant>(ᐧ); if (ok) {
-            return (slice<byte>([]), default);
-        }
+    var (_, ok) = key._<unsafeNoneMagicConstant>(ᐧ); if (ok) {
+        return (slice<byte>([]), default);
     }
 
     return (default, NoneSignatureTypeDisallowedError);

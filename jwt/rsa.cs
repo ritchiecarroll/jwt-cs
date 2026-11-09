@@ -37,10 +37,8 @@ public static error Verify(this ref SigningMethodRSA m, @string signingString, s
     ж<rsa.PublicKey> rsaKey = default;
     bool ok = default;
 
-    {
-        (rsaKey, ok) = key._<ж<rsa.PublicKey>>(ᐧ); if (!ok) {
-            return newError("RSA verify expects *rsa.PublicKey", ErrInvalidKeyType);
-        }
+    (rsaKey, ok) = key._<ж<rsa.PublicKey>>(ᐧ); if (!ok) {
+        return newError("RSA verify expects *rsa.PublicKey", ErrInvalidKeyType);
     }
 
     if (!m.Hash.Available()) {
@@ -56,10 +54,8 @@ public static (slice<byte>, error) Sign(this ref SigningMethodRSA m, @string sig
     ж<rsa.PrivateKey> rsaKey = default;
     bool ok = default;
 
-    {
-        (rsaKey, ok) = key._<ж<rsa.PrivateKey>>(ᐧ); if (!ok) {
-            return (default, newError("RSA sign expects *rsa.PrivateKey", ErrInvalidKeyType));
-        }
+    (rsaKey, ok) = key._<ж<rsa.PrivateKey>>(ᐧ); if (!ok) {
+        return (default, newError("RSA sign expects *rsa.PrivateKey", ErrInvalidKeyType));
     }
 
     if (!m.Hash.Available()) {
@@ -69,12 +65,10 @@ public static (slice<byte>, error) Sign(this ref SigningMethodRSA m, @string sig
     var hasher = m.Hash.New();
     hasher.Write(slice<byte>(signingString));
 
-    {
-        var (sigBytes, err) = rsa.SignPKCS1v15(rand.Reader, rsaKey, m.Hash, hasher.Sum(default)); if (err == nil) {
-            return (sigBytes, default);
-        } else {
-            return (default, err);
-        }
+    var (sigBytes, err) = rsa.SignPKCS1v15(rand.Reader, rsaKey, m.Hash, hasher.Sum(default)); if (err == nil) {
+        return (sigBytes, default);
+    } else {
+        return (default, err);
     }
 }
 

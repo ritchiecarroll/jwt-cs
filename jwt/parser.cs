@@ -28,7 +28,7 @@ public static ж<Parser> NewParser(params Span<Action<ж<Parser>>> optionsʗp) {
         validator: Ꮡ(new Validator())
     ));
 
-    foreach (var (_, option) in options) {
+    foreach (var (_, option) in range(options)) {
         option(p);
     }
 
@@ -48,7 +48,7 @@ public static (ж<Token>, error) ParseWithClaims(this ref Parser p, @string toke
     if (p.validMethods != nil) {
         bool signingMethodValid = false;
         @string alg = token.Method.Alg();
-        foreach (var (_, m) in p.validMethods) {
+        foreach (var (_, m) in range(p.validMethods)) {
             if (m == alg) {
                 signingMethodValid = true;
                 break;
@@ -75,11 +75,9 @@ public static (ж<Token>, error) ParseWithClaims(this ref Parser p, @string toke
             return (token, newError("keyfunc returned empty verification key set", ErrTokenUnverifiable));
         }
 
-        foreach (var (_, key) in have.Keys) {
-            {
-                err = token.Method.Verify(text, token.Signature, key); if (err == nil) {
-                    break;
-                }
+        foreach (var (_, key) in range(have.Keys)) {
+            err = token.Method.Verify(text, token.Signature, key); if (err == nil) {
+                break;
             }
         }
         break;
@@ -98,10 +96,8 @@ public static (ж<Token>, error) ParseWithClaims(this ref Parser p, @string toke
             p.validator = NewValidator();
         }
 
-        {
-            var errΔ1 = p.validator.Validate(claims); if (errΔ1 != nil) {
-                return (token, newError("", ErrTokenInvalidClaims, errΔ1));
-            }
+        var errΔ1 = p.validator.Validate(claims); if (errΔ1 != nil) {
+            return (token, newError("", ErrTokenInvalidClaims, errΔ1));
         }
     }
 
@@ -125,15 +121,11 @@ public static (ж<Token> token, slice<@string> parts, error err) ParseUnverified
     token = Ꮡ(new Token(Raw: tokenString));
 
     slice<byte> headerBytes = default;
-    {
-        (headerBytes, err) = p.DecodeSegment(parts[0]); if (err != nil) {
-            return (token, parts, newError("could not base64 decode header", ErrTokenMalformed, err));
-        }
+    (headerBytes, err) = p.DecodeSegment(parts[0]); if (err != nil) {
+        return (token, parts, newError("could not base64 decode header", ErrTokenMalformed, err));
     }
-    {
-        err = json.Unmarshal(headerBytes, token.ᏑHeader); if (err != nil) {
-            return (token, parts, newError("could not JSON decode header", ErrTokenMalformed, err));
-        }
+    err = json.Unmarshal(headerBytes, token.ᏑHeader); if (err != nil) {
+        return (token, parts, newError("could not JSON decode header", ErrTokenMalformed, err));
     }
 
     token.Claims = claims;
@@ -144,40 +136,32 @@ public static (ж<Token> token, slice<@string> parts, error err) ParseUnverified
     }
 
     if (!p.useJSONNumber) {
-        {
-            ref var c = ref heap<MapClaims>(out var Ꮡc);
-            (c, var okΔ1) = token.Claims._<MapClaims>(ᐧ); if (okΔ1) {
-                err = json.Unmarshal(claimBytes, Ꮡc);
-            } else {
-                err = json.Unmarshal(claimBytes, Ꮡclaims);
-            }
+        ref var c = ref heap<MapClaims>(out var Ꮡc);
+        (c, var okΔ1) = token.Claims._<MapClaims>(ᐧ); if (okΔ1) {
+            err = json.Unmarshal(claimBytes, Ꮡc);
+        } else {
+            err = json.Unmarshal(claimBytes, Ꮡclaims);
         }
     } else {
         var dec = json.NewDecoder(new bytes_BufferжReader(bytes.NewBuffer(claimBytes)));
         dec.UseNumber();
-        {
-            ref var c = ref heap<MapClaims>(out var Ꮡc);
-            (c, var okΔ2) = token.Claims._<MapClaims>(ᐧ); if (okΔ2) {
-                err = dec.Decode(Ꮡc);
-            } else {
-                err = dec.Decode(Ꮡclaims);
-            }
+        ref var c = ref heap<MapClaims>(out var Ꮡc);
+        (c, var okΔ2) = token.Claims._<MapClaims>(ᐧ); if (okΔ2) {
+            err = dec.Decode(Ꮡc);
+        } else {
+            err = dec.Decode(Ꮡclaims);
         }
     }
     if (err != nil) {
         return (token, parts, newError("could not JSON decode claim", ErrTokenMalformed, err));
     }
 
-    {
-        var (method, okΔ3) = token.Header["alg"]._<@string>(ᐧ); if (okΔ3) {
-            {
-                token.Method = GetSigningMethod(method); if (token.Method == nil) {
-                    return (token, parts, newError("signing method (alg) is unavailable", ErrTokenUnverifiable));
-                }
-            }
-        } else {
-            return (token, parts, newError("signing method (alg) is unspecified", ErrTokenUnverifiable));
+    var (method, okΔ3) = token.Header["alg"]._<@string>(ᐧ); if (okΔ3) {
+        token.Method = GetSigningMethod(method); if (token.Method == nil) {
+            return (token, parts, newError("signing method (alg) is unavailable", ErrTokenUnverifiable));
         }
+    } else {
+        return (token, parts, newError("signing method (alg) is unspecified", ErrTokenUnverifiable));
     }
 
     (token.Signature, err) = p.DecodeSegment(parts[2]);
@@ -213,16 +197,14 @@ public static (slice<byte>, error) DecodeSegment(this ref Parser p, @string seg)
     var encoding = base64.RawURLEncoding;
 
     if (p.decodePaddingAllowed) {
-        {
-            nint l = len(seg) % 4; if (l > 0) {
-                seg += strings.Repeat("=", 4 - l);
-            }
+        nint l = len(seg) % 4; if (l > 0) {
+            seg += strings.Repeat("=", 4 - l);
         }
         encoding = base64.URLEncoding;
     }
 
     if (p.decodeStrict) {
-        encoding = (~encoding).Strict();
+        encoding = encoding.Strict();
     }
     return encoding.DecodeString(seg);
 }

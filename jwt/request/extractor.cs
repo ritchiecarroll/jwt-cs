@@ -18,11 +18,9 @@ partial struct HeaderExtractor /*[]@string*/;
 public static (@string, error) ExtractToken(this HeaderExtractor e, ж<http.Request> Ꮡreq) {
     ref var req = ref Ꮡreq.DerefOrNull();
 
-    foreach (var (_, header) in e) {
-        {
-            @string ah = req.Header.Get(header); if (ah != ""u8) {
-                return (ah, default);
-            }
+    foreach (var (_, header) in range<@string>(e)) {
+        @string ah = req.Header.Get(header); if (ah != ""u8) {
+            return (ah, default);
         }
     }
     return ("", ErrNoTokenInRequest);
@@ -35,11 +33,9 @@ public static (@string, error) ExtractToken(this ArgumentExtractor e, ж<http.Re
 
     _ = Ꮡreq.ParseMultipartForm(10000000);
 
-    foreach (var (_, arg) in e) {
-        {
-            @string ah = req.Form.Get(arg); if (ah != ""u8) {
-                return (ah, default);
-            }
+    foreach (var (_, arg) in range<@string>(e)) {
+        @string ah = req.Form.Get(arg); if (ah != ""u8) {
+            return (ah, default);
         }
     }
 
@@ -49,13 +45,11 @@ public static (@string, error) ExtractToken(this ArgumentExtractor e, ж<http.Re
 partial struct MultiExtractor /*[]Extractor*/;
 
 public static (@string, error) ExtractToken(this MultiExtractor e, ж<http.Request> req) {
-    foreach (var (_, extractor) in e) {
-        {
-            var (tok, err) = extractor.ExtractToken(req); if (tok != ""u8) {
-                return (tok, default);
-            } else if (!errors.Is(err, ErrNoTokenInRequest)) {
-                return ("", err);
-            }
+    foreach (var (_, extractor) in range<Extractor>(e)) {
+        var (tok, err) = extractor.ExtractToken(req); if (tok != ""u8) {
+            return (tok, default);
+        } else if (!errors.Is(err, ErrNoTokenInRequest)) {
+            return ("", err);
         }
     }
     return ("", ErrNoTokenInRequest);
@@ -67,12 +61,10 @@ partial struct PostExtractionFilter {
 }
 
 public static (@string, error) ExtractToken(this ref PostExtractionFilter e, ж<http.Request> req) {
-    {
-        var (tok, err) = e.Extractor.ExtractToken(req); if (tok != ""u8) {
-            return e.Filter(tok);
-        } else {
-            return ("", err);
-        }
+    var (tok, err) = e.Extractor.ExtractToken(req); if (tok != ""u8) {
+        return e.Filter(tok);
+    } else {
+        return ("", err);
     }
 }
 

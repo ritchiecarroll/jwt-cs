@@ -13,7 +13,7 @@ public static (ж<jwt.Token> token, error err) ParseFromRequest(ж<http.Request>
 
     var p = Ꮡ(new fromRequestParser(req, extractor, default, nil));
 
-    foreach (var (_, option) in options) {
+    foreach (var (_, option) in range(options)) {
         option(p);
     }
 

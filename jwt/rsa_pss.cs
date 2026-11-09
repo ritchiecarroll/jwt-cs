@@ -109,12 +109,10 @@ public static (slice<byte>, error) Sign(this ref SigningMethodRSAPSS m, @string 
     var hasher = m.Hash.New();
     hasher.Write(slice<byte>(signingString));
 
-    {
-        var (sigBytes, err) = rsa.SignPSS(rand.Reader, rsaKey, m.Hash, hasher.Sum(default), m.Options); if (err == nil) {
-            return (sigBytes, default);
-        } else {
-            return (default, err);
-        }
+    var (sigBytes, err) = rsa.SignPSS(rand.Reader, rsaKey, m.Hash, hasher.Sum(default), m.Options); if (err == nil) {
+        return (sigBytes, default);
+    } else {
+        return (default, err);
     }
 }
 

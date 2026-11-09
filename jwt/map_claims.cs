@@ -67,7 +67,7 @@ internal static (ClaimStrings, error) parseClaimsString(this MapClaims m, @strin
         break;
     }
     case slice<any> v: {
-        foreach (var (_, a) in v) {
+        foreach (var (_, a) in range(v)) {
             var (vs, ok) = a._<@string>(ᐧ);
             if (!ok) {
                 return (default, newError(fmt.Sprintf("%s is invalid"u8, key), ErrInvalidType));
