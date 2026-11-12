@@ -4,7 +4,7 @@
 
 > unofficial go2cs C# conversion of [github.com/golang-jwt/jwt/v5](https://github.com/golang-jwt/jwt/tree/v5.3.1) v5.3.1, built on the Go 1.26.10 standard library; not affiliated with or endorsed by the golang-jwt maintainers or the Go project. Security: the Go standard library this package is built on includes no Go security fixes released after Go 1.26.10; review before any production use.
 
-[![Tests](https://img.shields.io/badge/Tests-189_matched_%2F_0_disclosed-brightgreen?logo=go)](https://github.com/ritchiecarroll/jwt-cs/blob/nuget-5.3.1.3/VALIDATION.md) [![C# Source](https://img.shields.io/badge/C%23_Source-@5.3.1.3-512BD4?logo=dotnet)](https://github.com/ritchiecarroll/jwt-cs/tree/nuget-5.3.1.3)\
+[![converted by go2cs](https://go2cs.net/images/go2cs-badge.svg)](https://go2cs.net) [![Tests](https://img.shields.io/badge/Tests-189_matched_%2F_0_disclosed-brightgreen?logo=go)](https://github.com/ritchiecarroll/jwt-cs/blob/nuget-5.3.1.3/VALIDATION.md) [![C# Source](https://img.shields.io/badge/C%23_Source-@5.3.1.3-512BD4?logo=dotnet)](https://github.com/ritchiecarroll/jwt-cs/tree/nuget-5.3.1.3)\
 [![Go module](https://img.shields.io/badge/Go_module-@v5.3.1-00ADD8?logo=go)](https://pkg.go.dev/github.com/golang-jwt/jwt/v5@v5.3.1) [![go2cs](https://img.shields.io/badge/go2cs-@1.26.10.3-512BD4?logo=dotnet)](https://github.com/ritchiecarroll/go2cs/tree/nuget-1.26.10.3)
 
 Converted from [github.com/golang-jwt/jwt/v5](https://github.com/golang-jwt/jwt/tree/v5.3.1) source to C# in [ritchiecarroll/jwt-cs](https://github.com/ritchiecarroll/jwt-cs/tree/nuget-5.3.1.3); licensed under MIT — see [LICENSE](https://github.com/ritchiecarroll/jwt-cs/blob/nuget-5.3.1.3/LICENSE).
