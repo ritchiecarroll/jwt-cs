@@ -1,5 +1,7 @@
 # jwt
 
+[![converted by go2cs](https://go2cs.net/images/go2cs-badge.svg)](https://go2cs.net)
+
 An unofficial C# conversion of the Go module [`github.com/golang-jwt/jwt/v5`](https://github.com/golang-jwt/jwt), produced by [go2cs](https://github.com/ritchiecarroll/go2cs) as a proof of its third-party conversion path.
 
 This repository is not affiliated with or endorsed by the golang-jwt maintainers, the authors of `github.com/golang-jwt/jwt`, or the Go project. Go users should use the upstream module.
