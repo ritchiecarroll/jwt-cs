@@ -6,10 +6,11 @@ using math = math_package;
 using strconv = strconv_package;
 using time = time_package;
 using encoding;
+using static jwt_package;
 
 partial class jwt_package {
 
-public static readonly ж<time.Duration> ᏑTimePrecision = new StaticBox<time.Duration>(time.ΔSecond);
+public static readonly ж<time.Duration> ᏑTimePrecision = new StaticBox<time.Duration>(time.Second);
 public static ref time.Duration TimePrecision => ref ((StaticBox<time.Duration>)ᏑTimePrecision).ValueSlot;
 
 public static readonly ж<bool> ᏑMarshalSingleStringAsArray = new StaticBox<bool>(true);
@@ -28,15 +29,17 @@ internal static ж<NumericDate> newNumericDateFromSeconds(float64 f) {
     return NewNumericDate(time.Unix((int64)round, (int64)(frac * 1e9D)));
 }
 
+} partial class jwtᴛNumericDate {
+
 public static (slice<byte> b, error err) MarshalJSON(this NumericDate date) {
     nint prec = default;
-    if (TimePrecision < time.ΔSecond) {
-        prec = (nint)math.Log10((float64)time.ΔSecond / (float64)TimePrecision);
+    if (TimePrecision < time.Second) {
+        prec = (nint)math.Log10((float64)time.Second / (float64)TimePrecision);
     }
     var truncatedDate = date.Time.Truncate(TimePrecision);
 
     @string seconds = strconv.FormatInt(truncatedDate.Unix(), 10);
-    @string nanosecondsOffset = strconv.FormatFloat((float64)truncatedDate.Nanosecond() / (float64)time.ΔSecond, (byte)'f', prec, 64);
+    @string nanosecondsOffset = strconv.FormatFloat((float64)truncatedDate.Nanosecond() / (float64)time.Second, (byte)'f', prec, 64);
 
     var output = appendꓸꓸꓸ(slice<byte>(seconds), slice<byte>(nanosecondsOffset)[1..]);
 
@@ -63,7 +66,11 @@ public static error /*err*/ UnmarshalJSON(this ref NumericDate date, slice<byte>
     return default;
 }
 
+} partial class jwt_package {
+
 partial struct ClaimStrings /*[]@string*/;
+
+} partial class jwtᴛClaimStrings {
 
 public static error /*err*/ UnmarshalJSON(this ref ClaimStrings s, slice<byte> data) {
     error err = default;
@@ -116,4 +123,4 @@ public static (slice<byte> b, error err) MarshalJSON(this ClaimStrings s) {
     return json.Marshal((slice<@string>)s);
 }
 
-} // end jwt_package
+} // end jwtᴛClaimStrings

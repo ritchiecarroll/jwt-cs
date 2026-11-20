@@ -34,7 +34,7 @@
     <InterceptorsNamespaces>$(InterceptorsNamespaces);go2cs.Interceptors</InterceptorsNamespaces>
     <WarningsAsErrors>$(WarningsAsErrors);CS8032;CS8034;CS8784;CS8785;CS9057</WarningsAsErrors>
     <!-- What this package's conversion is a function of; nugetgo-pack.ps1 checks its validation proof names the same -->
-    <GoInputDigest>sha256-1fd38ec0666f50a1ffecc617b1d893f7274f771362025b513afa0eb65f6d4436</GoInputDigest>
+    <GoInputDigest>sha256-b674662b739eb64cf70df0515730b729d821b22cb12b87555131c4936be440e6</GoInputDigest>
   </PropertyGroup>
 
   <!-- Build outputs are copied to $(OutDir), so this default must also defer to an explicit

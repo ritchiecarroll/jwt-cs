@@ -1,5 +1,7 @@
 namespace go.github.com.golang_jwt.jwt;
 
+using static jwt_package;
+
 partial class jwt_package {
 
 partial struct RegisteredClaims {
@@ -11,6 +13,8 @@ partial struct RegisteredClaims {
     public ж<NumericDate> IssuedAt; /*`json:"iat,omitempty"`*/
     public @string ID; /*`json:"jti,omitempty"`*/
 }
+
+} partial class jwtᴛRegisteredClaims {
 
 public static (ж<NumericDate>, error) GetExpirationTime(this RegisteredClaims c) {
     return (c.ExpiresAt, default);
@@ -36,4 +40,4 @@ public static (@string, error) GetSubject(this RegisteredClaims c) {
     return (c.Subject, default);
 }
 
-} // end jwt_package
+} // end jwtᴛRegisteredClaims

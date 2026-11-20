@@ -15,6 +15,7 @@ using encoding;
 using github.com.golang_jwt.jwt;
 using rsa = crypto.rsa_package;
 using Δcrypto = crypto_package;
+using static main_package;
 
 partial class main_package {
 
@@ -28,7 +29,7 @@ internal static ж<@string> flagSign = flag.String("sign", "", "path to claims f
 internal static ж<@string> flagVerify = flag.String("verify", "", "path to JWT token file to verify or '-' to read from stdin");
 internal static ж<@string> flagShow = flag.String("show", "", "path to JWT token file to show without verification or '-' to read from stdin");
 
-internal static void Main() {
+internal static void main() {
     flag.Var(flagClaims, "claim", "add additional claims. may be used more than once");
     flag.Var(flagHead, "header", "add additional header params. may be used more than once");
 
@@ -74,13 +75,12 @@ internal static (slice<byte>, error retErr) loadData(@string p) {
         }
 
         Δio.Reader rdr = default;
-        var exprᴛ1 = p;
         switch (ᐧ) {
-        case {} when exprᴛ1 == "-"u8: {
+        case {} when p == "-"u8: {
             rdr = new os_FileжReader(os.Stdin);
             break;
         }
-        case {} when exprᴛ1 == "+"u8: {
+        case {} when p == "+"u8: {
             (_ᴛ1, retErr) = (slice<byte>("{}"u8), default); goto ᒐdone;
         }
         default: {
@@ -325,6 +325,8 @@ internal static @string algHelp() {
 
 partial struct ArgList /*map[@string, @string]*/;
 
+} partial class mainᴛArgList {
+
 public static @string String(this ArgList l) {
     var (data, _) = json.Marshal(l);
     return (@string)data;
@@ -339,4 +341,4 @@ public static error Set(this ArgList l, @string arg) {
     return default;
 }
 
-} // end main_package
+} // end mainᴛArgList

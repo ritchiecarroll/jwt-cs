@@ -6,6 +6,7 @@ using rsa = go.crypto.rsa_package;
 using go.crypto;
 using hash = hash_package;
 using io = io_package;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -63,6 +64,8 @@ public static ж<SigningMethodRSAPSS> SigningMethodPS512;
     RegisterSigningMethod(SigningMethodPS512.Alg(), () => new SigningMethodRSAPSSжSigningMethod(SigningMethodPS512));
 }
 
+} partial class jwtᴛSigningMethodRSAPSS {
+
 public static error Verify(this ref SigningMethodRSAPSS m, @string signingString, slice<byte> sig, any key) {
     ж<rsa.PublicKey> rsaKey = default;
     switch (key.type()) {
@@ -116,4 +119,4 @@ public static (slice<byte>, error) Sign(this ref SigningMethodRSAPSS m, @string 
     }
 }
 
-} // end jwt_package
+} // end jwtᴛSigningMethodRSAPSS

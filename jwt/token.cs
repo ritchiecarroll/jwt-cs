@@ -6,6 +6,7 @@ using crypto = crypto_package;
 using base64 = encoding.base64_package;
 using json = encoding.json_package;
 using encoding;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -51,6 +52,8 @@ public static ж<Token> NewWithClaims(SigningMethod method, Claims claims, param
     ));
 }
 
+} partial class jwtᴛToken {
+
 public static (@string, error) SignedString(this ref Token t, any key) {
     var (sstr, err) = t.SigningString();
     if (err != nil) {
@@ -85,4 +88,4 @@ public static @string EncodeSegment(this ref Token _, slice<byte> seg) {
     return base64.RawURLEncoding.EncodeToString(seg);
 }
 
-} // end jwt_package
+} // end jwtᴛToken

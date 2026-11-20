@@ -3,10 +3,13 @@ namespace go.github.com.golang_jwt.jwt;
 using json = encoding.json_package;
 using fmt = fmt_package;
 using encoding;
+using static jwt_package;
 
 partial class jwt_package {
 
 partial struct MapClaims /*map[@string, any]*/;
+
+} partial class jwtᴛMapClaims {
 
 public static (ж<NumericDate>, error) GetExpirationTime(this MapClaims m) {
     return m.parseNumericDate("exp");
@@ -97,4 +100,4 @@ internal static (@string, error) parseString(this MapClaims m, @string key) {
     return (iss, default);
 }
 
-} // end jwt_package
+} // end jwtᴛMapClaims

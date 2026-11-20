@@ -55,7 +55,7 @@ using static go.main_package;
 // or has none - golib, the BCL and hand-written conversions - and reports its own C# position.
 
 // <GoSourcePositionMaps>
-[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/cmd/jwt/main.go", "main.cs", "ABQ0goKCgoKGgoKWhIKWgoKCqJiCgrqClKSkpILKwoKmgqS0pIKClIKSxuiCgpSClKaCpqqEgoKogoKogoKUgoKUlLS0pMqCqIKCqIKmqoSCgoKCqIKCqIKCuoKClIKCuoKCqJaCgriUgoKUgoLGgoKUgoLGgoKUgoLIgoKUlKiEgoKogoKmgoKogoKmgoKmpoKmgqaCpoKmgoKUgoKCgoKUppTKgoKmgoKClII=", "45-49:1;95-97:1;136-154:1", "", "", "", "93:25,94:17")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/cmd/jwt/main.go", "main.cs", "ABU0goKCgoKGgoKWhIKWgoKCqJiCgrqClKSkpILKwoKmgpS0pIKClIKSxuiCgpSClKaCpqqEgoKogoKogoKUgoKUlLS0pMqCqIKCqIKmqoSCgoKCqIKCqIKCuoKClIKCuoKCqJaCgriUgoKUgoLGgoKUgoLGgoKUgoLIgoKUlKiEgoKogoKmgoKogoKmgoKmpoKmgqaCpoKmgoKUgoKCgoKUppTqgoKmgoKClII=", "45-49:1;95-97:1;136-154:1", "", "", "", "93:25,94:17")]
 // </GoSourcePositionMaps>
 
 namespace go;
@@ -92,3 +92,13 @@ public static partial class main_package
     [GoInit] internal static void initᴛᴛimportꓸstrings() => builtin.initPackage(typeof(strings_package));
     // </ImportInitializers>
 }
+
+// A Go method is an extension method on its receiver type. The methods of one type are
+// in a class of their own beside the package class, so that a method and a package-level
+// type, constant or variable can share a name as they do in Go. Each class is declared
+// below with the type it holds the methods of; its blocks are in the converted sources,
+// in Go's declaration order.
+
+// <MethodHolders>
+[GoMethodHost(typeof(main_package.ArgList)), global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)] public static partial class mainᴛArgList;
+// </MethodHolders>

@@ -62,7 +62,7 @@ using static go.github.com.golang_jwt.jwt.v5.request_package;
 // or has none - golib, the BCL and hand-written conversions - and reports its own C# position.
 
 // <GoSourcePositionMaps>
-[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/extractor.go", "extractor.cs", "AAkWAAccpIKCpgAEEKSWgoK4zISCgoKCpgAHFIKClAAGEqKGgpQ=")]
+[assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/extractor.go", "extractor.cs", "AAoWAAkcpIKCpgAIEKSWgoK4AAgMhIKCgoKmAAsUgoKUAAoSooaClA==")]
 [assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/oauth2.go", "oauth2.cs", "AAcQhIKUqs4=")]
 [assembly: GoPositionMap("github.com/golang-jwt/jwt/v5@v5.3.1/request/request.go", "request.cs", "AAketJaCqIKUgqiCgqisggALGoKCuqKC", "60-62:1;67-69:1")]
 // </GoSourcePositionMaps>
@@ -101,3 +101,17 @@ public static partial class request_package
     [GoInit] internal static void initᴛᴛimportꓸstrings() => builtin.initPackage(typeof(strings_package));
     // </ImportInitializers>
 }
+
+// A Go method is an extension method on its receiver type. The methods of one type are
+// in a class of their own beside the package class, so that a method and a package-level
+// type, constant or variable can share a name as they do in Go. Each class is declared
+// below with the type it holds the methods of; its blocks are in the converted sources,
+// in Go's declaration order.
+
+// <MethodHolders>
+[GoMethodHost(typeof(request_package.ArgumentExtractor)), global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)] public static partial class requestᴛArgumentExtractor;
+[GoMethodHost(typeof(request_package.BearerExtractor)), global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)] public static partial class requestᴛBearerExtractor;
+[GoMethodHost(typeof(request_package.HeaderExtractor)), global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)] public static partial class requestᴛHeaderExtractor;
+[GoMethodHost(typeof(request_package.MultiExtractor)), global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)] public static partial class requestᴛMultiExtractor;
+[GoMethodHost(typeof(request_package.PostExtractionFilter)), global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)] public static partial class requestᴛPostExtractionFilter;
+// </MethodHolders>

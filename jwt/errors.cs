@@ -4,6 +4,7 @@ using errors = errors_package;
 using fmt = fmt_package;
 using strings = strings_package;
 using ꓸꓸꓸerror = Span<error>;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -28,6 +29,8 @@ partial struct joinedError {
     internal slice<error> errs;
 }
 
+} partial class jwtᴛjoinedError {
+
 internal static @string Error(this joinedError je) {
     var msgᴷ = new stackAppend<@string>();
 
@@ -39,6 +42,8 @@ internal static @string Error(this joinedError je) {
     return strings.Join(msg, ", ");
 }
 
+} partial class jwt_package {
+
 internal static error joinErrors(params ꓸꓸꓸerror errsʗp) {
     var errs = errsʗp.slice();
 
@@ -47,9 +52,13 @@ internal static error joinErrors(params ꓸꓸꓸerror errsʗp) {
     )));
 }
 
+} partial class jwtᴛjoinedError {
+
 internal static slice<error> Unwrap(this joinedError je) {
     return je.errs;
 }
+
+} partial class jwt_package {
 
 internal static error newError(@string message, error err, params ꓸꓸꓸerror moreʗp) {
     var more = moreʗp.sslice();

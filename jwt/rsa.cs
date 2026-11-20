@@ -6,6 +6,7 @@ using rsa = go.crypto.rsa_package;
 using go.crypto;
 using hash = hash_package;
 using io = io_package;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -28,6 +29,8 @@ public static ж<SigningMethodRSA> SigningMethodRS512;
     SigningMethodRS512 = Ꮡ(new SigningMethodRSA("RS512", crypto.SHA512));
     RegisterSigningMethod(SigningMethodRS512.Alg(), () => new SigningMethodRSAжSigningMethod(SigningMethodRS512));
 }
+
+} partial class jwtᴛSigningMethodRSA {
 
 public static @string Alg(this ref SigningMethodRSA m) {
     return m.Name;
@@ -72,4 +75,4 @@ public static (slice<byte>, error) Sign(this ref SigningMethodRSA m, @string sig
     }
 }
 
-} // end jwt_package
+} // end jwtᴛSigningMethodRSA

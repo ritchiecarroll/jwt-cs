@@ -6,6 +6,7 @@ using rand = go.crypto.rand_package;
 using errors = errors_package;
 using go.crypto;
 using io = io_package;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -20,6 +21,8 @@ public static ж<SigningMethodEd25519> SigningMethodEdDSA;
     SigningMethodEdDSA = Ꮡ(new SigningMethodEd25519());
     RegisterSigningMethod(SigningMethodEdDSA.Alg(), () => new SigningMethodEd25519жSigningMethod(SigningMethodEdDSA));
 }
+
+} partial class jwtᴛSigningMethodEd25519 {
 
 public static @string Alg(this ref SigningMethodEd25519 m) {
     return "EdDSA";
@@ -64,4 +67,4 @@ public static (slice<byte>, error) Sign(this ref SigningMethodEd25519 m, @string
     return (sig, default);
 }
 
-} // end jwt_package
+} // end jwtᴛSigningMethodEd25519

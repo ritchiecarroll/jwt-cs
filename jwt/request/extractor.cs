@@ -4,6 +4,7 @@ using errors = errors_package;
 using http = net.http_package;
 using strings = strings_package;
 using net;
+using static request_package;
 
 partial class request_package {
 
@@ -14,6 +15,8 @@ partial interface Extractor {
 }
 
 partial struct HeaderExtractor /*[]@string*/;
+
+} partial class requestᴛHeaderExtractor {
 
 public static (@string, error) ExtractToken(this HeaderExtractor e, ж<http.Request> Ꮡreq) {
     ref var req = ref Ꮡreq.DerefOrNull();
@@ -26,7 +29,11 @@ public static (@string, error) ExtractToken(this HeaderExtractor e, ж<http.Requ
     return ("", ErrNoTokenInRequest);
 }
 
+} partial class request_package {
+
 partial struct ArgumentExtractor /*[]@string*/;
+
+} partial class requestᴛArgumentExtractor {
 
 public static (@string, error) ExtractToken(this ArgumentExtractor e, ж<http.Request> Ꮡreq) {
     ref var req = ref Ꮡreq.DerefOrNull();
@@ -42,7 +49,11 @@ public static (@string, error) ExtractToken(this ArgumentExtractor e, ж<http.Re
     return ("", ErrNoTokenInRequest);
 }
 
+} partial class request_package {
+
 partial struct MultiExtractor /*[]Extractor*/;
+
+} partial class requestᴛMultiExtractor {
 
 public static (@string, error) ExtractToken(this MultiExtractor e, ж<http.Request> req) {
     foreach (var (_, extractor) in range<Extractor>(e)) {
@@ -55,10 +66,14 @@ public static (@string, error) ExtractToken(this MultiExtractor e, ж<http.Reque
     return ("", ErrNoTokenInRequest);
 }
 
+} partial class request_package {
+
 partial struct PostExtractionFilter {
     /*embed*/ public Extractor Extractor;
     public Func<@string, (@string, error)> Filter;
 }
+
+} partial class requestᴛPostExtractionFilter {
 
 public static (@string, error) ExtractToken(this ref PostExtractionFilter e, ж<http.Request> req) {
     var (tok, err) = e.Extractor.ExtractToken(req); if (tok != ""u8) {
@@ -68,8 +83,12 @@ public static (@string, error) ExtractToken(this ref PostExtractionFilter e, ж<
     }
 }
 
+} partial class request_package {
+
 partial struct BearerExtractor {
 }
+
+} partial class requestᴛBearerExtractor {
 
 public static (@string, error) ExtractToken(this BearerExtractor e, ж<http.Request> Ꮡreq) {
     ref var req = ref Ꮡreq.DerefOrNull();
@@ -81,4 +100,4 @@ public static (@string, error) ExtractToken(this BearerExtractor e, ж<http.Requ
     return (tokenHeader[7..], default);
 }
 
-} // end request_package
+} // end requestᴛBearerExtractor

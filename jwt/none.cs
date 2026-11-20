@@ -1,5 +1,7 @@
 namespace go.github.com.golang_jwt.jwt;
 
+using static jwt_package;
+
 partial class jwt_package {
 
 public static ж<signingMethodNone> SigningMethodNone;
@@ -18,6 +20,8 @@ public partial struct unsafeNoneMagicConstant /*@string*/;
 
     RegisterSigningMethod(SigningMethodNone.Alg(), () => new signingMethodNoneжSigningMethod(SigningMethodNone));
 }
+
+} partial class jwtᴛsigningMethodNone {
 
 public static @string Alg(this ref signingMethodNone m) {
     return "none";
@@ -42,4 +46,4 @@ public static (slice<byte>, error) Sign(this ref signingMethodNone m, @string si
     return (default, NoneSignatureTypeDisallowedError);
 }
 
-} // end jwt_package
+} // end jwtᴛsigningMethodNone

@@ -5,6 +5,7 @@ using hmac = go.crypto.hmac_package;
 using errors = errors_package;
 using go.crypto;
 using hash = hash_package;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -28,6 +29,8 @@ public static error ErrSignatureInvalid = errors.New("signature is invalid");
     SigningMethodHS512 = Ꮡ(new SigningMethodHMAC("HS512", crypto.SHA512));
     RegisterSigningMethod(SigningMethodHS512.Alg(), () => new SigningMethodHMACжSigningMethod(SigningMethodHS512));
 }
+
+} partial class jwtᴛSigningMethodHMAC {
 
 public static @string Alg(this ref SigningMethodHMAC m) {
     return m.Name;
@@ -75,4 +78,4 @@ public static (slice<byte>, error) Sign(this ж<SigningMethodHMAC> Ꮡm, @string
     return (default, newError("HMAC sign expects []byte", ErrInvalidKeyType));
 }
 
-} // end jwt_package
+} // end jwtᴛSigningMethodHMAC

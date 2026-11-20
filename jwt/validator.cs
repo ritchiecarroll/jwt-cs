@@ -3,6 +3,7 @@ namespace go.github.com.golang_jwt.jwt;
 using fmt = fmt_package;
 using slices = slices_package;
 using time = time_package;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -30,6 +31,8 @@ public static ж<Validator> NewValidator(params Span<Action<ж<Parser>>> optsʗp
     var p = NewParser(opts.ꓸꓸꓸ);
     return p.validator;
 }
+
+} partial class jwtᴛValidator {
 
 public static error Validate(this ref Validator v, Claims claims) {
     time.Time now = default;
@@ -182,6 +185,8 @@ internal static error verifySubject(this ref Validator v, Claims claims, @string
 
     return errorIfFalse(sub == cmp, ErrTokenInvalidSubject);
 }
+
+} partial class jwt_package {
 
 internal static error errorIfFalse(bool value, error err) {
     if (value) {

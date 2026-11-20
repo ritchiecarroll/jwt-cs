@@ -7,6 +7,7 @@ using fmt = fmt_package;
 using strings = strings_package;
 using encoding;
 using io = io_package;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -34,6 +35,8 @@ public static ж<Parser> NewParser(params Span<Action<ж<Parser>>> optionsʗp) {
 
     return p;
 }
+
+} partial class jwtᴛParser {
 
 public static (ж<Token>, error) Parse(this ref Parser p, @string tokenString, Func<ж<Token>, (any, error)> keyFunc) {
     return p.ParseWithClaims(tokenString, new MapClaims(new map<@string, any>{}), keyFunc);
@@ -172,6 +175,8 @@ public static (ж<Token> token, slice<@string> parts, error err) ParseUnverified
     return (token, parts, default);
 }
 
+} partial class jwt_package {
+
 internal static (slice<@string>, bool) splitToken(@string token) {
     var parts = new slice<@string>(3);
     var (header, remain, ok) = strings.Cut(token, tokenDelimiter);
@@ -193,6 +198,8 @@ internal static (slice<@string>, bool) splitToken(@string token) {
     return (parts, true);
 }
 
+} partial class jwtᴛParser {
+
 public static (slice<byte>, error) DecodeSegment(this ref Parser p, @string seg) {
     var encoding = base64.RawURLEncoding;
 
@@ -208,6 +215,8 @@ public static (slice<byte>, error) DecodeSegment(this ref Parser p, @string seg)
     }
     return encoding.DecodeString(seg);
 }
+
+} partial class jwt_package {
 
 public static (ж<Token>, error) Parse(@string tokenString, Func<ж<Token>, (any, error)> keyFunc, params Span<Action<ж<Parser>>> optionsʗp) {
     var options = optionsʗp.sslice();

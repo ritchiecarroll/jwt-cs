@@ -10,6 +10,7 @@ using go.crypto;
 using go.math;
 using hash = hash_package;
 using io = io_package;
+using static jwt_package;
 
 partial class jwt_package {
 
@@ -36,6 +37,8 @@ public static ж<SigningMethodECDSA> SigningMethodES512;
     SigningMethodES512 = Ꮡ(new SigningMethodECDSA("ES512", crypto.SHA512, 66, 521));
     RegisterSigningMethod(SigningMethodES512.Alg(), () => new SigningMethodECDSAжSigningMethod(SigningMethodES512));
 }
+
+} partial class jwtᴛSigningMethodECDSA {
 
 public static @string Alg(this ref SigningMethodECDSA m) {
     return m.Name;
@@ -114,4 +117,4 @@ public static (slice<byte>, error) Sign(this ref SigningMethodECDSA m, @string s
     }
 }
 
-} // end jwt_package
+} // end jwtᴛSigningMethodECDSA
